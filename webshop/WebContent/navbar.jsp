@@ -13,7 +13,7 @@
 	<script src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/control.js"></script>
 	<script type="text/javascript" src="js/angular.js"></script>
-	<script type="text/javascript" src="js/loadItems.js"></script>
+	<script type="text/javascript" src="js/resourceCtrl.js"></script>
 	<script type="text/javascript" src="js/bootstrap-select.min.js"></script>
 	<script type="text/javascript" src="js/moment.min.js"></script>
 	<nav class="navbar navbar-default">

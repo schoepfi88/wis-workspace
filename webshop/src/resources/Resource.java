@@ -21,6 +21,8 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import db.Sqlite;
 import models.Item;
@@ -97,18 +99,24 @@ public class Resource {
 	@POST
 	@Path("/category")
 	@Produces(MediaType.TEXT_HTML)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response newCat(@FormParam("name") String name,
-			@FormParam("description") String description) throws IOException, ClassNotFoundException {
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response newCat(String jsonString) throws IOException, ClassNotFoundException {
 		Category cat = new Category();
+		System.out.println(jsonString);
+		JsonObject jsonO = new Gson().fromJson(jsonString, JsonObject.class);
+		String description = jsonO.get("description").getAsString();
+		String name = jsonO.get("name").getAsString();
 		cat.setDescription(description);
 		cat.setName(name);
-		
+//		
 		Sqlite.getInstance().createCategory(cat);
 		
-		ResponseBuilder response = Response.seeOther(URI.create("http://localhost:8080/webshop/createCategory.jsp"));
+		ResponseBuilder response = Response.status(200);//Response.seeOther(URI.create("http://localhost:8080/webshop/createCategory.jsp"));
 		//servletResponse.sendRedirect("../../createCategory.jsp");
 		Resource.setFeedback("Category successfully created");
+		JsonObject json = new JsonObject();
+		json.addProperty("feedback", 200);
+		response.entity(json.toString());
 		return response.build();
 	}
 	

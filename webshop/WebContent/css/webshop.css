@@ -59,7 +59,9 @@ html {
 	overflow-x: hidden;
 }
 
-
+h1, h2 {
+	font-family: Montserrat !important;
+}
 
 div:not(#delbtn){
 	font-family: Montserrat !important;

@@ -60,6 +60,40 @@ public class Sqlite {
 		return categories;
 	}
 	
+	public Category getCategory(int id){
+		Category cat = new Category();
+		try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			// create a database connection
+			Connection c = DriverManager
+					.getConnection(dbPath);
+			c.setAutoCommit(false);
+			System.out.println("Opened database successfully");
+
+			PreparedStatement pstmt = c.prepareStatement("SELECT * FROM category WHERE id like ?");
+			pstmt.setInt(1, id);
+			
+			ResultSet rs = pstmt.executeQuery();
+			cat.setId(rs.getInt("id"));
+			cat.setDescription(rs.getString("description"));
+			cat.setName(rs.getString("name"));
+			
+			rs.close();
+			pstmt.close();
+			c.close();
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.exit(0);
+		}
+		System.out.println("Operation done successfully");
+		return cat;
+	}
+	
 	public ArrayList<Item> getItems() throws ClassNotFoundException {
 		ArrayList<Item> items = new ArrayList<>();
 		Class.forName("org.sqlite.JDBC");
@@ -108,7 +142,6 @@ public class Sqlite {
 
 			
 			PreparedStatement pstmt = c.prepareStatement("SELECT * FROM item WHERE id like ?");
-			
 			pstmt.setInt(1, id);
 			
 			ResultSet rs = pstmt.executeQuery();
@@ -183,8 +216,9 @@ public class Sqlite {
 		return rowsAffected;
 	}
 	
-	public void createCategory(Category cat) throws ClassNotFoundException {
+	public boolean createCategory(Category cat) throws ClassNotFoundException {
 		Class.forName("org.sqlite.JDBC");
+		boolean success = false;
 		try {
 			boolean initialize = SQLiteJDBCLoader.initialize();
 			SQLiteDataSource dataSource = new SQLiteDataSource();
@@ -199,10 +233,12 @@ public class Sqlite {
 			stmt.close();
 			c.commit();
 			c.close();
+			success = true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return success;
 		}
-
+		return success;
 	}
 	
 	public void createComment(Comment comment) throws ClassNotFoundException {

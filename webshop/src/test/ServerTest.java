@@ -1,97 +1,71 @@
 package test;
 
 import static org.junit.Assert.*;
-import java.io.IOException;
-import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.jackson.JacksonFeature;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.server.ServerConfig;
-import org.glassfish.jersey.servlet.ServletContainer;
-import org.glassfish.jersey.test.DeploymentContext;
+import javax.ws.rs.core.Application;
 import org.glassfish.jersey.test.JerseyTest;
-import org.glassfish.jersey.test.JerseyTestNg;
-import org.glassfish.jersey.test.ServletDeploymentContext;
-import org.glassfish.jersey.test.grizzly.GrizzlyWebTestContainerFactory;
-import org.glassfish.jersey.test.spi.TestContainerException;
-import org.glassfish.jersey.test.spi.TestContainerFactory;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
+import db.Sqlite;
 import models.Category;
-import models.Comment;
 import models.Item;
-import resources.Application;
 import resources.Resource;
-import static com.jayway.restassured.RestAssured.expect;
-import static com.jayway.restassured.RestAssured.get;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
-public class ServerTest{
-	
-	@Test
-	public void testUserFetchesSuccess() {
-		expect().
-			body("id", equalTo("12")).
-			body("firstName", equalTo("Tim")).
-			body("lastName", equalTo("Tester")).
-			body("birthday", equalTo("1970-01-16T07:56:49.871+01:00")).
-		when().
-			get("/rest-test-tutorial/user/id/12");
-	}
- 
-	@Test
-	public void testUserNotFound() {
-		expect().
-			body(nullValue()).
-		when().
-			get("/rest-test-tutorial/user/id/666");
-	}
-	
-	
-	
-	//Resource r = Mockito.mock(Resource.class);
-//	Item i;
-//	Comment c;
-//	Category ca;
-	
-//	@Override
-//	public Application configure(){
-//		return new Application();
-//	}
-//	
-//	@Override
-//	protected TestContainerFactory getTestContainerFactory() throws TestContainerException {
-//	    return new GrizzlyWebTestContainerFactory();
-//	}
-//	@Override
-//	protected DeploymentContext configureDeployment() {
-//	    return ServletDeploymentContext.forPackages("resources,org.codehaus.*").build();
-//	}
-//	
-//	@Override
-//	protected void configureClient(ClientConfig config) {
-//	    config.register(JacksonFeature.class);
-//	}
-	
-	
-//	@Before
-//	public void setupResources() throws ClassNotFoundException, IOException{
-//		//Mockito.when(request.getParameter("username")).thenReturn("me");
-//		r.newCat("CategoryName", "CategoryDescription");
-//		ca = r.getCategories().get(0);
-//		assertTrue("create category test", ca.getName().equals("CategoryName"));
-////		r.newItem("ItemTitleTest", "ItemDescriptionTest", "ItemAuthorTest", , price, servletResponse);
-//	}
-//	
-//	@Test
-//	public void test() {
-//		fail("Not yet implemented");
-//	}
-//	@Test
-//	public void testSingleNode() throws Exception {
-//	    final int hello = target("resource/item").request().get().getStatus();
-//	    System.out.println(hello);
-//	    assertEquals(200, hello);
-//	}
 
+
+public class ServerTest extends JerseyTest {
+	@Mock
+	Sqlite db = Mockito.mock(Sqlite.class);
+	
+	@InjectMocks
+	Resource r;
+	
+	@Before
+	public void init() throws ClassNotFoundException{
+		
+		Category cat = new Category();
+		cat.setId(999);
+		cat.setDescription("test description");
+		cat.setName("test name");
+		Item i = new Item();
+		i.setTitle("Apple");
+    	Mockito.when(db.getItem(1)).thenReturn(i);
+		Mockito.when(db.createCategory(cat)).thenReturn(true);
+		Mockito.when(db.getCategory(999)).thenReturn(cat);
+		
+		
+	}
+	 
+    @Override
+    protected Application configure() {
+        return new resources.Application();
+    }
+ 
+    @Test
+    public void testGetItem() throws ClassNotFoundException {
+    	
+    	String jsonString = target("resource/item/1").request().get(String.class);
+    	JsonObject item = new Gson().fromJson(jsonString, JsonObject.class);
+    	Mockito.verify(db).getItem(1);
+        //final String hello = target("resource/item").request().get(String.class);
+        assertEquals("Apple", item.get("title").getAsString());
+    }
+    
+    @Test
+    public void testCreateCategory() {
+    	Category newCat = new Category();
+    	newCat.setName("test name");
+    	newCat.setDescription("test description");
+    	String inputString = new Gson().toJson(newCat);
+    	Entity<String> entity = Entity.entity(inputString, MediaType.APPLICATION_JSON);
+    	String jsonString = target("resource/category").request().post(entity).readEntity(String.class);
+    	JsonObject cat = new Gson().fromJson(jsonString, JsonObject.class);
+    	assertEquals(cat.get("feedback").getAsInt(), 200);
+    }
 }

@@ -1,6 +1,7 @@
 var app = angular.module("WebShop", []);
 
 app.controller("ItemCtrl", function($scope, $http) {
+	$scope.baseUrl = "http://localhost:8080/webshop/api/resource/item/";
 	$http.get('http://localhost:8080/webshop/api/resource/item').
 	success(function(data, status, headers, config) {
     	$scope.items = data;
@@ -13,7 +14,7 @@ app.controller("ItemCtrl", function($scope, $http) {
 	
 	$scope.getItem = function(id){
 		$scope.id = $scope.items[id].id;
-		$scope.url ="http://localhost:8080/webshop/api/resource/item/" + $scope.id + "/comment";
+		$scope.url = $scope.baseUrl + $scope.id + "/comment";
 		$scope.oneSelected = true;
 		$scope.items = [$scope.items[id]];
 		$http.get($scope.url).
@@ -42,5 +43,32 @@ app.controller("ItemCtrl", function($scope, $http) {
 		var id = $scope.items[index].id;
 		$http.delete('http://localhost:8080/webshop/api/resource/item/' + id);
 		$scope.items.splice(index, 1);
+	}
+});
+
+app.controller("CategoryCtrl", function($scope, $http){
+	$scope.baseUrl = "http://localhost:8080/webshop/api/resource/category";
+	// get categories
+	$http.get($scope.baseUrl).
+	success(function(data, status, headers, config) {
+    	$scope.categories = data;
+    	$scope.oneSelected = false;
+    	$scope.created = false;
+	}).
+	error(function(data, status, headers, config) {
+
+	});
+	
+	
+	// create
+	$scope.createCategory = function(category){
+		$http.post($scope.baseUrl, JSON.stringify(category))
+		.then(function successCallback(response) {
+		    if (response.data.feedback == 200)
+		    	$scope.feedback = "Category successfully created";
+		  });
+		$scope.created = true;
+		$scope.category.name = "";
+		$scope.category.description = "";
 	}
 });

@@ -11,19 +11,19 @@
 	<div class="row">
 		<div class="col-xs-1 col-md-1 col-sm-1 col-lg-1">
 		</div>
-		<div class="col-xs-10 col-md-10 col-sm-10 col-lg-10">
-			<form class="form-group" action="../webshop/api/resource/category" method="POST">
+		<div class="col-xs-10 col-md-10 col-sm-10 col-lg-10" ng-app="WebShop" ng-controller="CategoryCtrl">
+			<form class="form-group">
 				<label for="name">Name</label>
-				<input class="form-control" name="name" />
+				<input class="form-control" name="name" ng-model="category.name"/>
 				<br/>
 				<label for="description">Description</label>
-				<textarea class="form-control" name="description" rows="3"></textarea>
+				<textarea class="form-control" ng-model="category.description" name="description" rows="3"></textarea>
 				<br/>
-				<input class="btn btn-default" type="submit" value="Submit" />
+				<input class="btn btn-default" type="submit" ng-click="createCategory(category)" value="Submit" />
 			</form>
-			<% if (Resource.getFeedbackTrigger() == Resource.getLoadTrigger()) { %>
-				<div id="feedback" class="alert alert-success" role="alert"><% out.println(Resource.getFeedback()); %></div>
-			<% } %>
+			<div ng-show="created">
+				<div id="feedback" class="alert alert-success" role="alert">{{feedback}}</div>
+			</div>
 		</div>
 	</div>
 </body>
