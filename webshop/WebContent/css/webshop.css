@@ -1,0 +1,75 @@
+.navbar-default {
+	background-color: orange;
+	font-weight: bold;
+}
+
+.navbar {
+	border-radius: 0;
+}
+
+.navbar-brand {
+	color: #E7E7E7 !important;
+}
+
+.navbar-default .navbar-nav > li > a {
+   color: white;
+}
+
+.h1 {
+	text-align: center;
+	color: orange;
+	padding-top: 1%;
+	padding-bottom: 1%;
+}
+
+.h2 {
+	text-align: center;
+	color: orange;
+	padding-top: 1%;
+	padding-bottom: 1%;
+}
+
+.author {
+	float: right;
+}
+
+.price {
+	float: right;
+}
+
+.desc {
+	float: right;
+}
+
+.panel-heading {
+	background-color: orange !important;
+	color: white !important;
+	border-color: orange !important;
+}
+
+.alert {
+	margin-bottom: -20px !important;
+}
+
+.panel {
+	border-color: orange !important;
+}
+
+html {
+	overflow-x: hidden;
+}
+
+
+
+div:not(#delbtn){
+	font-family: Montserrat !important;
+}
+
+a:link, a:visited, a:hover, a:active {
+    text-decoration: none;
+    color: black;
+}
+
+a {
+	color: black;
+}
