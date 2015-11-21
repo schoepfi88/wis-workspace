@@ -5,6 +5,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -35,11 +36,21 @@ public class Resource {
 	private static int feedbackTrigger = 0;
 	private static int loadTrigger = 0;
 	private static int errorTrigger = 0;
+	private Sqlite db;
+	
+	
+	public Resource() {
+		this.db = Sqlite.getInstance();
+	}
+	// only for test usage
+	public Resource(Sqlite db){
+		this.db = db;
+	}
+	
 	@GET
 	@Path("/item")
 	@Produces({MediaType.APPLICATION_JSON })
 	public List<Item> getItems() throws ClassNotFoundException {
-		Sqlite db = Sqlite.getInstance();
 		ArrayList<Item> items = db.getItems();
 		return items;
 	}
@@ -48,7 +59,6 @@ public class Resource {
 	@Produces({ MediaType.APPLICATION_JSON })
 	@Path("/item/{id}")
 	public Item getItem(@PathParam("id") int id) throws ClassNotFoundException {
-		Sqlite db = Sqlite.getInstance();
 		Item item = db.getItem(id);
 		return item;
 	}
@@ -56,31 +66,31 @@ public class Resource {
 	@POST
 	@Path("/item")
 	@Produces(MediaType.TEXT_HTML)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public void newItem(@FormParam("title") String title,
-			@FormParam("description") String description,
-			@FormParam("author") String author,
-			@FormParam("category") String category,
-			@FormParam("price") float price,
-			@Context HttpServletResponse servletResponse) throws IOException, ClassNotFoundException {
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response newItem(String jsonString) throws IOException, ClassNotFoundException {
 		Item item = new Item();
-		item.setDescription(description);
-		item.setTitle(title);
-		item.setAuthor(author);
-		item.setCategory(category);
-		System.out.println(price);
-		item.setPrice(price);
-		Sqlite.getInstance().createItem(item);
-		servletResponse.sendRedirect("../../create.jsp");
+		System.out.println(jsonString);
+		JsonObject jsonO = new Gson().fromJson(jsonString, JsonObject.class);
+		item.setDescription(jsonO.get("description").getAsString());
+		item.setTitle(jsonO.get("title").getAsString());
+		item.setAuthor(jsonO.get("author").getAsString());
+		item.setCategory(jsonO.get("category").getAsString());
+		//System.out.println(price);
+		item.setPrice(jsonO.get("price").getAsFloat());
+		db.createItem(item);
 		Resource.setFeedback("Item successfully created");
+		ResponseBuilder response = Response.status(200);
+		JsonObject json = new JsonObject();
+		json.addProperty("feedback", 200);
+		response.entity(json.toString());
+		return response.build();
 	}
 
 	@DELETE
 	@Path("/item/{id}") // maybe /item/delete/id???
 	//@Produces(MediaType.TEXT_HTML)
 	public void deleteItem(@PathParam("id") int id) throws ClassNotFoundException {
-		System.out.println("im in deleteItem in get");
-		Sqlite db = Sqlite.getInstance();
+		//System.out.println("im in deleteItem in get");
 		int rA = db.deleteItem(id); //rA = rows affected
 		if(rA >0){
 			Resource.setFeedback("Item successfully deleted");
@@ -93,7 +103,14 @@ public class Resource {
 	@Path("/category")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Category> getCategories(){
-		return Sqlite.getInstance().getCategories();
+		return db.getCategories();
+	}
+	
+	@GET
+	@Path("/category/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Category getCategory(@PathParam("id") int id){
+		return db.getCategory(id);
 	}
 	
 	@POST
@@ -102,15 +119,13 @@ public class Resource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response newCat(String jsonString) throws IOException, ClassNotFoundException {
 		Category cat = new Category();
-		System.out.println(jsonString);
+		//System.out.println(jsonString);
 		JsonObject jsonO = new Gson().fromJson(jsonString, JsonObject.class);
 		String description = jsonO.get("description").getAsString();
 		String name = jsonO.get("name").getAsString();
 		cat.setDescription(description);
 		cat.setName(name);
-//		
-		Sqlite.getInstance().createCategory(cat);
-		
+		db.createCategory(cat);
 		ResponseBuilder response = Response.status(200);//Response.seeOther(URI.create("http://localhost:8080/webshop/createCategory.jsp"));
 		//servletResponse.sendRedirect("../../createCategory.jsp");
 		Resource.setFeedback("Category successfully created");
@@ -126,26 +141,39 @@ public class Resource {
 	@Path("/item/{id}/comment")
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void newComment(String json, @PathParam("id") int item_id, 
+	public Response newComment(String json, @PathParam("id") int item_id, 
 			@Context HttpServletResponse servletResponse) throws IOException, ClassNotFoundException {
-		System.out.println(json);
+		//System.out.println(json);
 		Comment comment = new GsonBuilder().create().fromJson(json, Comment.class);
 		comment.setItemID(item_id);
-		System.out.println(item_id);
-		Sqlite.getInstance().createComment(comment);
+		//System.out.println(item_id);
+		db.createComment(comment);
+		ResponseBuilder response = Response.status(200);//Response.seeOther(URI.create("http://localhost:8080/webshop/createCategory.jsp"));
 		//servletResponse.sendRedirect("../../createCategory.jsp");
-		//Resource.setFeedback("Comment successfully created");
+		Resource.setFeedback("Category successfully created");
+		JsonObject jsonO = new JsonObject();
+		jsonO.addProperty("feedback", 200);
+		response.entity(jsonO.toString());
+		return response.build();
 	}
 	
 	@GET
 	@Path("/item/{id}/comment")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public ArrayList<Comment> getComments(@PathParam("id") int itemID){
-		Sqlite db = Sqlite.getInstance();
 		ArrayList<Comment> comments = db.getComments(itemID);
 		return comments;
 		
 	}
+	
+	@GET
+	@Path("/item/{id}/comment/{cid}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Comment getComment(@PathParam("id") int itemID, @PathParam("cid") int commID){
+		return db.getComment(itemID, commID);
+		
+	}
+	
 	public static String getFeedback(){
 		return feedback;
 	}

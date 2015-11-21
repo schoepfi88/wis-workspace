@@ -53,5 +53,6 @@
 	<classpathentry kind="lib" path="/home/csl/Dropbox/uni/7.Semester/wis/ps/05/rest-assured-2.4.1-dist/rest-assured-2.4.1.jar"/>
 	<classpathentry kind="lib" path="/home/csl/Dropbox/uni/7.Semester/wis/ps/05/rest-assured-2.4.1-dist/rest-assured-2.4.1-deps.zip"/>
 	<classpathentry kind="lib" path="/home/csl/Dropbox/uni/7.Semester/wis/ps/05/hamcrest-1.3/hamcrest-library-1.3.jar"/>
+	<classpathentry kind="lib" path="/home/csl/Dropbox/uni/7.Semester/wis/ps/05/testng-6.8.5.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

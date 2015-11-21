@@ -30,8 +30,6 @@ app.controller("ItemCtrl", function($scope, $http) {
 	}
 	
 	$scope.createComment = function(comment){
-		console.log(JSON.stringify(comment));
-		console.log($scope.url);
 		$http.post($scope.url, JSON.stringify(comment));
 		comment.createdAt = moment().format('YYYY-MM-DD HH:mm:ss');
 		$scope.comments.push(comment);
@@ -43,6 +41,24 @@ app.controller("ItemCtrl", function($scope, $http) {
 		var id = $scope.items[index].id;
 		$http.delete('http://localhost:8080/webshop/api/resource/item/' + id);
 		$scope.items.splice(index, 1);
+	}
+	
+	$scope.createItem = function(item){
+		item.author = $("#author").val();
+		item.category = $("#category").val();
+		$http.post($scope.baseUrl, JSON.stringify(item)).
+		success(function(data, status, headers, config) {
+	    	$scope.items = $scope.items.push(item);
+	    	$scope.created = true;
+	    	$scope.feedback = "Item successfully created";
+	    	$scope.item.title = "";
+	    	$scope.item.description = "";
+	    	$scope.item.price = "";
+	    	$('select').val('').selectpicker('refresh');
+		}).
+		error(function(data, status, headers, config) {
+
+		});
 	}
 });
 

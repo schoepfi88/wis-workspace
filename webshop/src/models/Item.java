@@ -48,9 +48,6 @@ public class Item {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-	public String itemToJSON(){
-		return new Gson().toJson(this);
-	}
 	
 	public void setCreatedAt(String time){
 		created_at = time;

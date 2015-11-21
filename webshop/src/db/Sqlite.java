@@ -262,6 +262,35 @@ public class Sqlite {
 		}
 	}
 	
+	public Comment getComment(int itemID, int commID){
+		Comment comment = new Comment();
+		try {
+			// create a database connection
+			Connection c = DriverManager.getConnection(dbPath);
+			c.setAutoCommit(false);
+			System.out.println("Opened database successfully");
+
+			PreparedStatement pstmt = c.prepareStatement("Select * FROM comment WHERE item_id like ? and id like ?");
+			
+			pstmt.setInt(1, itemID);
+			pstmt.setInt(2, commID);
+
+			ResultSet rs = pstmt.executeQuery();
+			comment.setId(rs.getInt("id"));
+			comment.setTitle(rs.getString("title1"));
+			comment.setAuthor(rs.getString("author"));
+			comment.setMessage(rs.getString("message"));
+			c.commit();
+			pstmt.close();
+			c.close();
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.exit(0);
+		}
+		
+		return comment;
+	}
+	
 	public ArrayList<Comment> getComments(int id){
 		ArrayList<Comment> comments = new ArrayList<>();
 		try {
