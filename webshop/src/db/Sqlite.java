@@ -6,6 +6,9 @@ import javax.sql.RowSet;
 import models.Category;
 import models.Comment;
 import models.Item;
+import models.User;
+import resources.Resource;
+
 import org.sqlite.SQLiteJDBCLoader;
 
 import org.sqlite.SQLiteDataSource;
@@ -162,7 +165,7 @@ public class Sqlite {
 		return item;
 	}
 
-	public void createItem(Item item) throws ClassNotFoundException {
+	public boolean createItem(Item item) throws ClassNotFoundException {
 		Class.forName("org.sqlite.JDBC");
 		try {
 			boolean initialize = SQLiteJDBCLoader.initialize();
@@ -182,7 +185,7 @@ public class Sqlite {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		return true;
 	}
 
 	public int deleteItem(int id) throws ClassNotFoundException {
@@ -241,7 +244,7 @@ public class Sqlite {
 		return success;
 	}
 	
-	public void createComment(Comment comment) throws ClassNotFoundException {
+	public boolean createComment(Comment comment) throws ClassNotFoundException {
 		Class.forName("org.sqlite.JDBC");
 		try {
 			boolean initialize = SQLiteJDBCLoader.initialize();
@@ -260,6 +263,7 @@ public class Sqlite {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return true;
 	}
 	
 	public Comment getComment(int itemID, int commID){
@@ -328,6 +332,37 @@ public class Sqlite {
 		System.out.println("Operation done successfully");
 		return comments;
 	}
-
 	
+	public ArrayList<String> login(String name, String password) throws ClassNotFoundException, SQLException{
+		ArrayList<String> userData = new ArrayList<>();
+		Class.forName("org.sqlite.JDBC");
+		Connection connection = DriverManager
+				.getConnection(dbPath);
+		PreparedStatement pstmt = connection
+				.prepareStatement("Select * from user where user_name like ? and password like ?;");
+		pstmt.setString(1, name);
+		pstmt.setString(2, password);
+		ResultSet rs = pstmt.executeQuery();
+		if (rs.next()) {
+			userData.add(Integer.toString(rs.getInt(1)));
+			userData.add(rs.getString(2));
+			userData.add(Integer.toString(rs.getInt(4)));
+		} 
+		return userData;
+	}
+	
+	public int register(String username, String password) throws ClassNotFoundException, SQLException{
+		Class.forName("org.sqlite.JDBC");
+
+		Connection connection = DriverManager.getConnection(dbPath);
+		
+		PreparedStatement pstmt = connection
+				.prepareStatement("INSERT INTO user (user_name, password, privilege) VALUES (?, ?, ?)");
+		pstmt.setString(1, username);
+		pstmt.setString(2, password);
+		pstmt.setInt(3, 7);
+
+		int ctrl = pstmt.executeUpdate();
+		return ctrl;
+	}
 }

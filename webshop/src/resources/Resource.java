@@ -88,8 +88,8 @@ public class Resource {
 
 	@DELETE
 	@Path("/item/{id}") // maybe /item/delete/id???
-	//@Produces(MediaType.TEXT_HTML)
-	public void deleteItem(@PathParam("id") int id) throws ClassNotFoundException {
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteItem(@PathParam("id") int id) throws ClassNotFoundException {
 		//System.out.println("im in deleteItem in get");
 		int rA = db.deleteItem(id); //rA = rows affected
 		if(rA >0){
@@ -97,6 +97,11 @@ public class Resource {
 		}else{
 			Resource.setFeedback("Delete not successfull");
 		}
+		ResponseBuilder response = Response.status(200);
+		JsonObject json = new JsonObject();
+		json.addProperty("feedback", 200);
+		response.entity(json.toString());
+		return response.build();
 	}
 	
 	@GET

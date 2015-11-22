@@ -11,8 +11,6 @@ public class User {
 		this.id = 0;
 		this.username = "guest";
 		this.privilege = 1;
-		
-		
 	}
 
 	public static User getInstance(){
@@ -22,12 +20,12 @@ public class User {
 		return instance;
 	}
 
-	public void logIn(int id, String username, int privilege){
+	public void setUser(int id, String username, int privilege){
 		this.id = id;
 		this.username = username;
 		this.privilege = privilege;
 	}
-	public void logOut(){
+	public void unsetUser(){
 		this.id = 0;
 		this.username = "guest";
 		this.privilege = 1;

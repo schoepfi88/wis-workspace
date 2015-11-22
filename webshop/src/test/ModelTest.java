@@ -74,11 +74,11 @@ public class ModelTest {
 		assertEquals("guest", u.getUsername());
 		assertEquals(0, u.getId());
 		assertEquals(1, u.getPrivilege());
-		u.logIn(2, "testuser", 3);
+		u.setUser(2, "testuser", 3);
 		assertEquals("testuser", u.getUsername());
 		assertEquals(2, u.getId());
 		assertEquals(3, u.getPrivilege());
-		u.logOut();
+		u.unsetUser();
 		assertEquals("guest", u.getUsername());
 		assertEquals(0, u.getId());
 		assertEquals(1, u.getPrivilege());
