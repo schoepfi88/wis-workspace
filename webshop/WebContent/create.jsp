@@ -40,7 +40,7 @@
 				</select>
 				<br>
 				<br>
-				<input class="btn btn-default" type="submit" value="Submit" ng-click="createItem(item)"/>
+				<input class="btn btn-default" type="submit" value="Submit" name="submit" ng-click="createItem(item)"/>
 			</form>
 			<div ng-show="created">
 				<div id="feedback" class="alert alert-success" role="alert">{{feedback}}</div>

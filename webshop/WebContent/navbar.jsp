@@ -32,17 +32,17 @@
 
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li><a href="/webshop">Home</a></li>
+					<li id="homeNavBar"><a href="/webshop">Home</a></li>
 					<li><a href="/webshop">Items</a></li>
-					<li><a href="/webshop/categories.jsp">Categories</a></li>
-					<li><a href="/webshop/create.jsp">Create Item</a></li>
-					<li><a href="login.jsp">Login</a></li>
+					<li id="createCatNavBar"><a href="/webshop/categories.jsp">Categories</a></li>
+					<li id="createItemNavBar"><a href="/webshop/create.jsp">Create Item</a></li>
+					<li id="loginNavBar"><a href="login.jsp">Login</a></li>
 					<%
 						User user = User.getInstance();
 						String usr = user.getUsername();
 					%>
-					<li><a href="#/"> <% out.println(usr); %></a></li>
-					<li><a href="/webshop/Logout">Logout</a></li>
+					<li id="userNavBar"><a href="#/"> <% out.println(usr); %></a></li>
+					<li id="logoutNavBar" ><a href="/webshop/Logout">Logout</a></li>
 				</ul>
 				<form class="navbar-form navbar-right" role="search">
 					<div class="input-group">

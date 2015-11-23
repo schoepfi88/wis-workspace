@@ -5,6 +5,6 @@ public class DatabasePath {
 	private String chriPath = "jdbc:sqlite:/home/csl/workspace/webshop/src/db/shop.db";
 	
 	public String getPath(){
-		return chriPath;
+		return balthiPath;
 	}
 }
