@@ -12,7 +12,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.*;
 import org.testng.annotations.Test;
 
-import com.thoughtworks.selenium.webdriven.commands.GetCssCount;
+
 
 import db.Sqlite;
 
@@ -26,6 +26,11 @@ public class BrowserTest {
 	private static final String ID_HOME = "homeNavBar";
 	private static final String ID_LOGOUT = "logoutNavBar";
 	private static final String URL_PAGE = "http://localhost:8080/webshop/";
+	private static final String URL_CREATE_CAT = "http://localhost:8080/webshop/createCategory.jsp";
+	private static final String URL_CREATE_ITEM = "http://localhost:8080/webshop/create.jsp";
+	private static final String URL_REGISTER = "http://localhost:8080/webshop/register.jsp";
+	private static final String URL_LOGIN = "http://localhost:8080/webshop/login.jsp";
+	
 
 	private static final int MAX_PAGE_LOADING_TIME = 30000;
 	private static final int MAX_IMPLICIT_WAIT = 10000;
@@ -168,8 +173,7 @@ public class BrowserTest {
 	@Test
 	public void createItem(){
 		logoutHelper();
-		final WebElement loginElement = driver.findElement(By.id(ID_CREATE_ITEM));
-		loginElement.click();
+		driver.get(URL_CREATE_ITEM);
 		final WebElement title = driver.findElement(By.name("title"));
 		final WebElement description = driver.findElement(By.name("description"));
 		final WebElement price = driver.findElement(By.name("price"));
@@ -184,10 +188,20 @@ public class BrowserTest {
 		final WebElement feedback = driver.findElement(By.id("feedback"));
 		Assert.assertEquals("Item successfully created", feedback.getText() );
 		
+		}
+	
+	@Test
+	public void createCategory(){
+		driver.get(URL_CREATE_CAT);
+		final WebElement name = driver.findElement(By.name("name"));
+		final WebElement description = driver.findElement(By.name("description"));
+		final WebElement submit = driver.findElement(By.name("submit"));
 		
-		
-		
-		
+		name.sendKeys("TestCategory");
+		description.sendKeys("Describtionasjdsjkdjkajk");
+		submit.click();
+		final WebElement feedback = driver.findElement(By.id("feedback"));
+		Assert.assertEquals("Category successfully created", feedback.getText() );
 	}
 	
 	
