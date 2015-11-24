@@ -19,7 +19,7 @@
 				<label for="description">Description</label>
 				<textarea class="form-control" ng-model="category.description" name="description" rows="3"></textarea>
 				<br/>
-				<input class="btn btn-default" type="submit" ng-click="createCategory(category)" value="Submit" />
+				<input name="submit" class="btn btn-default" type="submit" ng-click="createCategory(category)" value="Submit" />
 			</form>
 			<div ng-show="alert">
 				<div ng-show="success">
