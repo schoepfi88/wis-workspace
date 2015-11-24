@@ -20,6 +20,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
+import org.eclipse.jetty.http.HttpStatus;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -68,38 +70,38 @@ public class Resource {
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response newItem(String jsonString) throws IOException, ClassNotFoundException {
-		Item item = new Item();
-		System.out.println(jsonString);
-		JsonObject jsonO = new Gson().fromJson(jsonString, JsonObject.class);
-		item.setDescription(jsonO.get("description").getAsString());
-		item.setTitle(jsonO.get("title").getAsString());
-		item.setAuthor(jsonO.get("author").getAsString());
-		item.setCategory(jsonO.get("category").getAsString());
-		//System.out.println(price);
-		item.setPrice(jsonO.get("price").getAsFloat());
-		db.createItem(item);
-		Resource.setFeedback("Item successfully created");
-		ResponseBuilder response = Response.status(200);
+		Item item = new GsonBuilder().create().fromJson(jsonString, Item.class);
+		ResponseBuilder response = null;
 		JsonObject json = new JsonObject();
-		json.addProperty("feedback", 200);
+		boolean success = db.createItem(item);
+		if (success){
+			response = Response.status(HttpStatus.CREATED_201);
+			json.addProperty("feedback", "Item successfully created");
+			json.addProperty("success", success);
+		} else {
+			response = Response.status(HttpStatus.CONFLICT_409);
+			json.addProperty("feedback", "Item not created");
+			json.addProperty("success", success);
+		}
 		response.entity(json.toString());
 		return response.build();
 	}
 
 	@DELETE
-	@Path("/item/{id}") // maybe /item/delete/id???
+	@Path("/item/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteItem(@PathParam("id") int id) throws ClassNotFoundException {
-		//System.out.println("im in deleteItem in get");
-		int rA = db.deleteItem(id); //rA = rows affected
-		if(rA >0){
-			Resource.setFeedback("Item successfully deleted");
-		}else{
-			Resource.setFeedback("Delete not successfull");
-		}
+		
 		ResponseBuilder response = Response.status(200);
 		JsonObject json = new JsonObject();
-		json.addProperty("feedback", 200);
+		int rA = db.deleteItem(id); //rA = rows affected
+		if(rA >0){
+			json.addProperty("feedback", "Item successfully deleted");
+			json.addProperty("success", true);
+		}else{
+			json.addProperty("feedback", "Delete not successfull");
+			json.addProperty("success", false);
+		}
 		response.entity(json.toString());
 		return response.build();
 	}
@@ -123,42 +125,83 @@ public class Resource {
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response newCat(String jsonString) throws IOException, ClassNotFoundException {
-		Category cat = new Category();
-		//System.out.println(jsonString);
-		JsonObject jsonO = new Gson().fromJson(jsonString, JsonObject.class);
-		String description = jsonO.get("description").getAsString();
-		String name = jsonO.get("name").getAsString();
-		cat.setDescription(description);
-		cat.setName(name);
-		db.createCategory(cat);
-		ResponseBuilder response = Response.status(200);//Response.seeOther(URI.create("http://localhost:8080/webshop/createCategory.jsp"));
-		//servletResponse.sendRedirect("../../createCategory.jsp");
-		Resource.setFeedback("Category successfully created");
+		Category cat = new GsonBuilder().create().fromJson(jsonString, Category.class);
+		boolean success = db.createCategory(cat);
+		ResponseBuilder response = null;
 		JsonObject json = new JsonObject();
-		json.addProperty("feedback", 200);
+		if (success){
+			response = Response.status(HttpStatus.CREATED_201);
+			json.addProperty("feedback", "Category successfully created");
+			json.addProperty("success", success);
+		} else {
+			response = Response.status(HttpStatus.FORBIDDEN_403);
+			json.addProperty("feedback", "Category not created");
+			json.addProperty("success", success);
+		}
 		response.entity(json.toString());
 		return response.build();
 	}
 	
-	
+	@DELETE
+	@Path("/category/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteCategory(@PathParam("id") int id) throws ClassNotFoundException {
+		ResponseBuilder response = Response.status(200);
+		JsonObject json = new JsonObject();
+		int rA = db.deleteCategory(id); //rA = rows affected
+		if(rA >0){
+			json.addProperty("feedback", "Category successfully deleted");
+			json.addProperty("success", true);
+		}else{
+			json.addProperty("feedback", "Delete not successfull");
+			json.addProperty("success", false);
+		}
+		response.entity(json.toString());
+		return response.build();
+	}
 	
 	@POST
 	@Path("/item/{id}/comment")
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response newComment(String json, @PathParam("id") int item_id, 
-			@Context HttpServletResponse servletResponse) throws IOException, ClassNotFoundException {
-		//System.out.println(json);
+	public Response newComment(String json, @PathParam("id") int item_id) throws IOException, ClassNotFoundException {
 		Comment comment = new GsonBuilder().create().fromJson(json, Comment.class);
+		ResponseBuilder response = null;
 		comment.setItemID(item_id);
-		//System.out.println(item_id);
-		db.createComment(comment);
-		ResponseBuilder response = Response.status(200);//Response.seeOther(URI.create("http://localhost:8080/webshop/createCategory.jsp"));
-		//servletResponse.sendRedirect("../../createCategory.jsp");
-		Resource.setFeedback("Category successfully created");
 		JsonObject jsonO = new JsonObject();
-		jsonO.addProperty("feedback", 200);
+		int success = db.createComment(comment);
+		if (success >=0 ){
+			response = Response.status(HttpStatus.CREATED_201);
+			jsonO.addProperty("feedback", "Comment successfully created");
+			jsonO.addProperty("success", true);
+			jsonO.addProperty("itemID", item_id);
+			jsonO.addProperty("cID", success);
+		} else {
+			response = Response.status(HttpStatus.CONFLICT_409);
+			jsonO.addProperty("feedback", "Comment not created");
+			jsonO.addProperty("success", false);
+		}
 		response.entity(jsonO.toString());
+		return response.build();
+	}
+	
+	@DELETE
+	@Path("/item/{id}/comment/{cid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteComment(@PathParam("id") int itemID, @PathParam("cid") int commID) throws ClassNotFoundException {
+		ResponseBuilder response = null;
+		JsonObject json = new JsonObject();
+		int rA = db.deleteComment(itemID, commID); //rA = rows affected
+		if(rA >0){
+			response = Response.status(HttpStatus.OK_200);
+			json.addProperty("feedback", "Comment successfully deleted");
+			json.addProperty("success", true);
+		}else{
+			response = Response.status(HttpStatus.NOT_FOUND_404);
+			json.addProperty("success", false);
+			json.addProperty("feedback", "Delete not successfull");
+		}
+		response.entity(json.toString());
 		return response.build();
 	}
 	

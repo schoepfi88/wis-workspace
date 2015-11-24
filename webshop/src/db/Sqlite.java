@@ -50,6 +50,22 @@ public class Sqlite {
 				cat.setId(rs.getInt("id"));
 				cat.setName(rs.getString("name"));
 				cat.setDescription(rs.getString("description"));
+				PreparedStatement pstmt = c.prepareStatement("SELECT * FROM item WHERE category like ?");
+				pstmt.setString(1, cat.getName());
+				ResultSet rs2 = pstmt.executeQuery();
+				ArrayList<Item> tmpItems = new ArrayList<>();
+				while (rs2.next()){
+					Item tmp = new Item();
+					tmp.setAuthor(rs2.getString("author"));
+					tmp.setDescription(rs2.getString("description"));
+					tmp.setTitle(rs2.getString("title1"));
+					tmp.setCategory(cat.getName());
+					tmp.setPrice(rs2.getFloat("price"));
+					tmp.setId(rs2.getInt("id"));
+					tmp.setCreatedAt(rs2.getString("created_at"));
+					tmpItems.add(tmp);
+				}
+				cat.setItems(tmpItems);
 				categories.add(cat);
 			}
 			rs.close();
@@ -173,6 +189,7 @@ public class Sqlite {
 			dataSource.setUrl(dbPath);
 			Connection c = dataSource.getConnection();
 			c.setAutoCommit(false);
+			item.setCategory(item.getCategory().replace("\n", ""));		// remove newline from category
 			System.out.println("Opened database successfully");
 			Statement stmt = c.createStatement();
 			String sql = "INSERT INTO item (title1, description, author, category, price) ";
@@ -189,8 +206,6 @@ public class Sqlite {
 	}
 
 	public int deleteItem(int id) throws ClassNotFoundException {
-		System.out.println("im ind delte 1240492059090");
-		System.out.println("id: "+id);
 		Class.forName("org.sqlite.JDBC");
 		int rowsAffected = 0;
 		try {
@@ -244,8 +259,38 @@ public class Sqlite {
 		return success;
 	}
 	
-	public boolean createComment(Comment comment) throws ClassNotFoundException {
+	public int deleteCategory(int id) throws ClassNotFoundException {
 		Class.forName("org.sqlite.JDBC");
+		int rowsAffected = 0;
+		try {
+			// create a database connection
+			Connection c = DriverManager.getConnection(dbPath);
+			c.setAutoCommit(false);
+			System.out.println("Opened database successfully");
+			System.out.println(id);
+			PreparedStatement pstmt = c.prepareStatement("DELETE FROM category WHERE id like ?");
+			
+			pstmt.setInt(1, id);
+
+			rowsAffected = pstmt.executeUpdate();
+			c.commit();
+
+			pstmt.close();
+			c.close();
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.exit(0);
+		}
+		if (rowsAffected > 0) {
+			System.out.println("Operation done successfully");
+		}
+		System.out.println("ROWS AFFECTED:" + rowsAffected);
+		return rowsAffected;
+	}
+	
+	public int createComment(Comment comment) throws ClassNotFoundException {
+		Class.forName("org.sqlite.JDBC");
+		int createdID = -1;
 		try {
 			boolean initialize = SQLiteJDBCLoader.initialize();
 			SQLiteDataSource dataSource = new SQLiteDataSource();
@@ -258,12 +303,49 @@ public class Sqlite {
 			String values = "VALUES ('" + comment.getAuthor() + "','" + comment.getMessage() + "','" + comment.getTitle() + "','" + comment.getItemID() + "');";
 			stmt.executeUpdate(sql + values);
 			stmt.close();
+			String query = "SELECT MAX(ID) AS LAST FROM comment";
+			PreparedStatement pst1 = c.prepareStatement(query);
+            ResultSet  rs1 = pst1.executeQuery();
+            String maxId=  rs1.getString("LAST");
+            createdID =(Integer.parseInt(maxId));
+            pst1.execute();
+            pst1.close();
+            rs1.close();
 			c.commit();
 			c.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return true;
+		return createdID;
+	}
+	
+	public int deleteComment(int itemID, int cID) throws ClassNotFoundException {
+		Class.forName("org.sqlite.JDBC");
+		int rowsAffected = 0;
+		try {
+			// create a database connection
+			Connection c = DriverManager.getConnection(dbPath);
+			c.setAutoCommit(false);
+			System.out.println("Opened database successfully");
+			PreparedStatement pstmt = c.prepareStatement("DELETE FROM comment WHERE item_id like ? and id like ?");
+			
+			pstmt.setInt(1, itemID);
+			pstmt.setInt(2, cID);
+
+			rowsAffected = pstmt.executeUpdate();
+			c.commit();
+
+			pstmt.close();
+			c.close();
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.exit(0);
+		}
+		if (rowsAffected > 0) {
+			System.out.println("Operation done successfully");
+		}
+		System.out.println("ROWS AFFECTED:" + rowsAffected);
+		return rowsAffected;
 	}
 	
 	public Comment getComment(int itemID, int commID){
@@ -309,9 +391,10 @@ public class Sqlite {
 					.getConnection(dbPath);
 			c.setAutoCommit(false);
 			System.out.println("Opened database successfully");
+			PreparedStatement pstmt = c.prepareStatement("Select * FROM comment WHERE item_id like ?");
+			pstmt.setInt(1, id);
 
-			Statement stmt = c.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM comment;");
+			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Comment comment = new Comment();
 				comment.setId(rs.getInt("id"));
@@ -323,7 +406,7 @@ public class Sqlite {
 				comments.add(comment);
 			}
 			rs.close();
-			stmt.close();
+			pstmt.close();
 			c.close();
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());

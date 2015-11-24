@@ -19,28 +19,44 @@
 	<h1 class="h1">Latest Items</h1>
 	<body ng-app="WebShop">
 	  <div ng-controller="ItemCtrl">
+	  	<div ng-show="alert">
+	  		<div class="row">
+	  			<div class="col-xs-1 col-md-1 col-sm-1 col-lg-1">
+				</div>
+				<div class="col-xs-10 col-md-10 col-sm-10 col-lg-10">
+					<div ng-show="success">
+						<div id="feedback" class="alert alert-success" role="alert">{{feedback}}</div>
+					</div>
+					<div ng-show="!success">
+						<div id="feedback" class="alert alert-danger" role="alert">{{feedback}}</div>
+					</div>
+					<br>
+					<br>
+				</div>
+			</div>
+		</div>
 	  	<div class="row" ng-repeat="item in items track by $index">
 	  		<div class="col-xs-1 col-md-1 col-sm-1 col-lg-1">
 				</div>
 			<div class="col-xs-10 col-md-10 col-sm-10 col-lg-10">
 				<div class="panel panel-default">
-					<a ng-click="getItem($index)">
+					<a class="clickPanel" ng-click="getItem($index)">
 						<div class="panel-heading">
 							{{item.title}}
 							<span class="author">
 								{{item.author}} - {{item.createdAt}}
 							</span>
 						</div>
-						<div class="panel-body">
-							{{item.description}}
-							<span class="price">
-								{{item.price}} $
-								<div id="delbtn" class="btn btn-default btn-sm" ng-click="deleteItem($index)">
-							<span class="glyphicon glyphicon-trash"></span>
-						</div>
-							</span>
-						</div>
-						</a>
+					</a>
+					<div class="panel-body">
+						{{item.description}}
+						<span class="price">
+							{{item.price}} $
+							<div id="delbtn" class="btn btn-danger btn-sm" ng-click="deleteItem($index)">
+								<span class="glyphicon glyphicon-trash"></span>
+							</div>
+						</span>
+					</div>
 				</div>
 				
 			</div>
@@ -53,20 +69,23 @@
 					</div>
 					<div class="col-xs-10 col-md-10 col-sm-10 col-lg-10">
 						<h2 class="h2">Comments</h2>
-						<div class="panel panel-default" ng-repeat="comment in comments">
+						<div ng-show = "comments.length == 0">
+							<div class="alert alert-warning" role="alert">No Comments available</div>
+							<br>
+							<br>
+						</div>
+						<div class="panel panel-default" ng-repeat="comment in comments track by $index">
 							<div class="panel-body">
 								{{comment.author}} : {{comment.message}} 
 								<span class="author">
 									{{comment.createdAt}}
+									<div id="delbtn" class="btn btn-danger btn-sm" ng-click="deleteComment($index)">
+										<span class="glyphicon glyphicon-trash"></span>
+									</div>
 								</span>
 							</div>
 						</div>
 						<h2 class="h2">Create Comment</h2>
-						<div ng-show="created">
-							<div id="feedback" class="alert alert-success" role="alert">Comment successfully created</div>
-							<br>
-							<br>
-						</div>
 				  		<form class="form-group" id="commentForm" method="POST">
 							<label for="author">Author</label>
 							<input class="form-control" ng-model="comment.author" name="author" />

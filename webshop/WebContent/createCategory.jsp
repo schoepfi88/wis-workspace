@@ -21,8 +21,13 @@
 				<br/>
 				<input class="btn btn-default" type="submit" ng-click="createCategory(category)" value="Submit" />
 			</form>
-			<div ng-show="created">
-				<div id="feedback" class="alert alert-success" role="alert">{{feedback}}</div>
+			<div ng-show="alert">
+				<div ng-show="success">
+					<div id="feedback" class="alert alert-success" role="alert">{{feedback}}</div>
+				</div>
+				<div ng-show="!success">
+					<div id="feedback" class="alert alert-danger" role="alert">{{feedback}}</div>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
@@ -91,9 +92,13 @@ public class ServerAPI extends JerseyTest {
 			Mockito.when(db.getCategory(999)).thenReturn(cat);
 			Mockito.when(db.getCategories()).thenReturn(cats);
 			Mockito.when(db.createCategory(cat)).thenReturn(true);
+			Mockito.when(db.deleteCategory(1)).thenReturn(1);
+			Mockito.when(db.deleteCategory(2)).thenReturn(0);
 			Mockito.when(db.getComment(1,1)).thenReturn(c);
 			Mockito.when(db.getComments(1)).thenReturn(coms);
-			Mockito.when(db.createComment(c)).thenReturn(true);
+			Mockito.when(db.createComment(c)).thenReturn(1);
+			Mockito.when(db.deleteComment(1, 1)).thenReturn(1);
+			Mockito.when(db.deleteComment(1, 2)).thenReturn(0);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -135,7 +140,7 @@ public class ServerAPI extends JerseyTest {
     public void testDeleteItem(){
     	String jsonString = target("resource/item/1").request().delete().readEntity(String.class);
     	JsonObject feedback = new Gson().fromJson(jsonString, JsonObject.class);
-    	assertEquals(feedback.get("feedback").getAsInt(), 200);
+    	assertEquals(feedback.get("feedback").getAsString(), "Item successfully deleted");
     }
     
     // get category with id 999
@@ -188,12 +193,31 @@ public class ServerAPI extends JerseyTest {
     
     // creation of category
     @Test
-    public void testCreateCategory() {
+    public void testCreateCategory() throws ClassNotFoundException {
     	String inputString = new Gson().toJson(cat);
     	Entity<String> entity = Entity.entity(inputString, MediaType.APPLICATION_JSON);
     	String jsonString = target("resource/category").request().post(entity).readEntity(String.class);
-    	JsonObject cat = new Gson().fromJson(jsonString, JsonObject.class);
-    	assertEquals(cat.get("feedback").getAsInt(), 200);
+    	JsonObject catOb = new Gson().fromJson(jsonString, JsonObject.class);
+    	Mockito.verify(db).createCategory(cat);
+    	//verify(mock).mymethod(argThat(new ObjectEqualityArgumentMatcher<Object>(obj)));
+    	assertEquals(catOb.get("success").getAsBoolean(), true);
+    	assertEquals(catOb.get("feedback").getAsString(), "Category successfully created");
+    }
+    
+    // delete category with id 1 (success)
+    @Test
+    public void testDeleteCategory(){
+    	String jsonString = target("resource/category/1").request().delete().readEntity(String.class);
+    	JsonObject feedback = new Gson().fromJson(jsonString, JsonObject.class);
+    	assertEquals(feedback.get("feedback").getAsString(), "Category successfully deleted");
+    }
+    
+ // delete category with id 1 (fail)
+    @Test
+    public void testDeleteCategoryFail(){
+    	String jsonString = target("resource/category/2").request().delete().readEntity(String.class);
+    	JsonObject feedback = new Gson().fromJson(jsonString, JsonObject.class);
+    	assertEquals(feedback.get("feedback").getAsString(), "Delete not successfull");
     }
     
     // creation of item
@@ -203,22 +227,8 @@ public class ServerAPI extends JerseyTest {
     	Entity<String> entity = Entity.entity(inputString, MediaType.APPLICATION_JSON);
     	String jsonString = target("resource/item").request().post(entity).readEntity(String.class);
     	JsonObject i = new Gson().fromJson(jsonString, JsonObject.class);
-    	assertEquals(i.get("feedback").getAsInt(), 200);
+    	assertEquals(i.get("feedback").getAsString(), "Item successfully created");
     	// test feedback and error variable on server
-    	String resourceFeedback = Resource.getFeedback();
-    	Resource.setError("ERROR");
-    	String resourceError = Resource.getFeedback();
-    	int resourceLoadTrigger = Resource.getLoadTrigger();
-    	int resourceErrorTrigger = Resource.getErrorTrigger();
-    	int resourceFeedbackTrigger = Resource.getFeedbackTrigger();
-    	Resource.incLoadTrigger();
-    	int resourceLoadTrigger2 = Resource.getLoadTrigger();
-    	assertEquals("Item successfully created", resourceFeedback);
-    	assertEquals("ERROR", resourceError);
-    	assertEquals(resourceLoadTrigger, 0);
-    	assertEquals(resourceLoadTrigger2, 1);
-    	assertEquals(resourceErrorTrigger, 1);
-    	assertEquals(resourceFeedbackTrigger, 1);
     }
     
     // create comment (from item with id = 1)
@@ -228,7 +238,23 @@ public class ServerAPI extends JerseyTest {
     	Entity<String> entity = Entity.entity(inputString, MediaType.APPLICATION_JSON);
     	String jsonString = target("resource/item/1/comment").request().post(entity).readEntity(String.class);
     	JsonObject i = new Gson().fromJson(jsonString, JsonObject.class);
-    	assertEquals(i.get("feedback").getAsInt(), 200);
+    	assertEquals(i.get("feedback").getAsString(), "Comment successfully created");
+    }
+    
+    // delete comment with id 1 (success)
+    @Test
+    public void testDeleteComment(){
+    	String jsonString = target("resource/item/1/comment/1").request().delete().readEntity(String.class);
+    	JsonObject feedback = new Gson().fromJson(jsonString, JsonObject.class);
+    	assertEquals(feedback.get("feedback").getAsString(), "Comment successfully deleted");
+    }
+    
+ // delete comment with id 1 (fail)
+    @Test
+    public void testDeleteCommentFail(){
+    	String jsonString = target("resource/item/1/comment/2").request().delete().readEntity(String.class);
+    	JsonObject feedback = new Gson().fromJson(jsonString, JsonObject.class);
+    	assertEquals(feedback.get("feedback").getAsString(), "Delete not successfull");
     }
     
     

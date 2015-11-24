@@ -1,0 +1,12 @@
+-save session id at server and check if user exists with this session id
++load items of category (in category.jsp)
+-warenkorb
+-admin benutzersystem
+-search for item (optional)
+-login ausblenden wenn eingeloggt, loggout ausblenden wenn ausgeloggt
++alle feedbacks mit angular
++fehlerbehandlung (feedback)
+-input validieren
+-compile source files with maven (für abgabe)
+-category already exists in db should return "creation not possible"
+-db path relativ -> also tests must run

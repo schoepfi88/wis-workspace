@@ -1,7 +1,5 @@
 package test;
 
-
-
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -70,9 +68,6 @@ public class BrowserTest {
 		final WebElement loginElement = driver.findElement(By.id(ID_CREATE_ITEM));
 		loginElement.click();
 		
-		
-		
-
 		final String result = driver.getCurrentUrl();
 		Assert.assertEquals(result, "http://localhost:8080/webshop/create.jsp");
 	}
@@ -159,6 +154,7 @@ public class BrowserTest {
 			e.printStackTrace();
 		}
 		driver.get(URL_PAGE);
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		int numItems =driver.findElements(By.className("row")).size();
 		Assert.assertEquals(size , numItems -1);
 	}
@@ -183,11 +179,6 @@ public class BrowserTest {
 		submit.click();
 		final WebElement feedback = driver.findElement(By.id("feedback"));
 		Assert.assertEquals("Item successfully created", feedback.getText() );
-		
-		
-		
-		
-		
 	}
 	
 	

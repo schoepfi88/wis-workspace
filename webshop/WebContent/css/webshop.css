@@ -1,6 +1,13 @@
+:root {
+	--usedColor: ;
+}
 .navbar-default {
-	background-color: orange;
+	background-color: #0B0B61;
 	font-weight: bold;
+}
+
+#delbtn {
+	margin-top: -5px;
 }
 
 .navbar {
@@ -8,25 +15,40 @@
 }
 
 .navbar-brand {
-	color: #E7E7E7 !important;
+	color: orange !important;
 }
 
 .navbar-default .navbar-nav > li > a {
    color: white;
 }
 
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    background-color: orange !important;
+    color: #0B0B61 !important;
+}
+
 .h1 {
 	text-align: center;
-	color: orange;
+	color: #0B0B61;
 	padding-top: 1%;
 	padding-bottom: 1%;
 }
 
 .h2 {
 	text-align: center;
-	color: orange;
+	color: #0B0B61;
 	padding-top: 1%;
 	padding-bottom: 1%;
+}
+
+.itemHead {
+	background-color: #0489B1;
+	border-color: #0489B1;
+	color: white;
+}
+
+.itemBody {
+	border-color: #0489B1;
 }
 
 .author {
@@ -42,9 +64,9 @@
 }
 
 .panel-heading {
-	background-color: orange !important;
+	background-color: #0B0B61 !important;
 	color: white !important;
-	border-color: orange !important;
+	border-color: #0B0B61 !important;
 }
 
 .alert {
@@ -52,7 +74,11 @@
 }
 
 .panel {
-	border-color: orange !important;
+	border-color: #0B0B61 !important;
+}
+
+.clickPanel {
+	cursor:pointer;
 }
 
 html {

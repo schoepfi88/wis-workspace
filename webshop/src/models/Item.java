@@ -2,6 +2,10 @@ package models;
 
 
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import com.google.gson.Gson;
 @XmlRootElement
 public class Item {
@@ -64,5 +68,36 @@ public class Item {
 	public String getCategory(){
 		return this.category;
 	}
+	@Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
+            // if deriving: appendSuper(super.hashCode()).
+            append(title).
+            append(description).
+            append(author).
+            append(category).
+            append(Integer.toString(id)).
+            append(Float.toString(price)).
+            append(created_at).
+            toHashCode();
+    }
 
+    @Override
+    public boolean equals(Object obj) {
+       if (!(obj instanceof Item))
+            return false;
+        if (obj == this)
+            return true;
+        Item rhs = (Item) obj;
+        return new EqualsBuilder().
+            // if deriving: appendSuper(super.equals(obj)).
+            append(title, rhs.title).
+            append(description, rhs.description).
+            append(price, rhs.price).
+            append(id, rhs.id).
+            append(author, rhs.author).
+            append(category, rhs.category).
+            append(created_at, rhs.created_at).
+            isEquals();
+    }
 }
