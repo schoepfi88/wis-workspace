@@ -10,6 +10,10 @@
 	margin-top: -5px;
 }
 
+#addbtn {
+	margin-left: 10px;
+}
+
 .navbar {
 	border-radius: 0;
 }
@@ -63,6 +67,10 @@
 	float: right;
 }
 
+.btn-right {
+	float: right;
+}
+
 .panel-heading {
 	background-color: #0B0B61 !important;
 	color: white !important;
@@ -78,6 +86,14 @@
 }
 
 .clickPanel {
+	cursor:pointer;
+}
+
+#cart {
+	font-size: 18px;
+}
+
+#logoutNavBar {
 	cursor:pointer;
 }
 

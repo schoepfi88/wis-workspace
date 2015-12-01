@@ -10,15 +10,23 @@
 	<div class="col-xs-1 col-md-1 col-sm-1 col-lg-1">
 		</div>
 	<div class="col-xs-10 col-md-10 col-sm-10 col-lg-10">
-		<form class="form-group" action="/webshop/Register" method="post">
+		<form class="form-group" ng-app="WebShop" ng-controller="LoginCtrl">
 			<label for="name">Username</label>
-			<input class="form-control" name="name" />
+			<input class="form-control" ng-model="user.name" name="name" />
 			<br/>
 			<label for="password">Password</label>
-			<input class="form-control" name="password" type="password" />
+			<input class="form-control" ng-model="user.password" name="password" type="password" />
 			<br/>
-			<input class="btn btn-default" type="submit" value="Submit" />
+			<input class="btn btn-default" type="submit" ng-click="register(user)" value="Submit" />
 		</form>
+		<div ng-show="alert">
+			<div ng-show="success">
+				<div id="feedback" class="alert alert-success" role="alert">{{feedback}}</div>
+			</div>
+			<div ng-show="!success">
+				<div id="feedback" class="alert alert-danger" role="alert">{{feedback}}</div>
+			</div>
+		</div>
 	</div>
 
 </body>

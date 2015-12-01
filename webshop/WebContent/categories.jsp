@@ -9,7 +9,6 @@
 	</head>
 <body>
 	<h1 class="h1">Categories</h1>
-	<% ArrayList<Category> cats = Sqlite.getInstance().getCategories(); %>
 	<div class="row" ng-app="WebShop" ng-controller="CategoryCtrl">
 		<div class="col-xs-1 col-md-1 col-sm-1 col-lg-1">
 				</div>
@@ -28,7 +27,7 @@
 				<div class="panel-heading clickPanel" data-toggle="collapse" data-target="#collapseOne{{$index}}" ng-click="loadItemsOfCategory($index)">
 					{{category.name}}
 					<span class="desc">{{category.description}}
-						<div id="delbtn" class="btn btn-danger btn-sm" ng-click="deleteCategory($index)">
+						<div ng-show="current_user().priv == 7" id="delbtn" class="btn btn-danger btn-sm" ng-click="deleteCategory($index)">
 							<span class="glyphicon glyphicon-trash"></span>
 						</div>
 					</span>
@@ -57,7 +56,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="btn btn-default" onclick="location.href='/webshop/createCategory.jsp'">Create Category</div>
+			<div ng-show="current_user().priv == 7" class="btn btn-default" onclick="location.href='/webshop/createCategory.jsp'">Create Category</div>
 			<br>
 			<br>
 		</div>

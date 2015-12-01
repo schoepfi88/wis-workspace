@@ -5,6 +5,7 @@ public class User {
 	private int id;
 	private String username;
 	private int privilege;
+	private String password;
 	
 	
 	private User(){
@@ -41,6 +42,10 @@ public class User {
 
 	public int getPrivilege() {
 		return privilege;
+	}
+	
+	public String getPassword(){
+		return password;
 	}
 
 }

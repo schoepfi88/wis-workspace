@@ -4,18 +4,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<% Resource.incLoadTrigger(); %>
 	<link href="css/bootstrap.min.css" rel="stylesheet"></link>
 	<link href="css/webshop.css" rel="stylesheet"></link>
 	<link href="css/bootstrap-select.min.css" rel="stylesheet"></link>
 	<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 	<script src="js/jquery-2.1.4.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/control.js"></script>
 	<script type="text/javascript" src="js/angular.js"></script>
+	<script type="text/javascript" src="js/angular-cookies.min.js"></script>
 	<script type="text/javascript" src="js/resourceCtrl.js"></script>
 	<script type="text/javascript" src="js/bootstrap-select.min.js"></script>
 	<script type="text/javascript" src="js/moment.min.js"></script>
+</head>
+<body ng-app="WebShop" ng-controller="LoginCtrl">
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<!-- mobile use -->
@@ -35,14 +36,11 @@
 					<li id="homeNavBar"><a href="/webshop">Home</a></li>
 					<li><a href="/webshop">Items</a></li>
 					<li id="createCatNavBar"><a href="/webshop/categories.jsp">Categories</a></li>
-					<li id="createItemNavBar"><a href="/webshop/create.jsp">Create Item</a></li>
-					<li id="loginNavBar"><a href="login.jsp">Login</a></li>
-					<%
-						User user = User.getInstance();
-						String usr = user.getUsername();
-					%>
-					<li id="userNavBar"><a href="#/"> <% out.println(usr); %></a></li>
-					<li id="logoutNavBar" ><a href="/webshop/Logout">Logout</a></li>
+					<li id="createItemNavBar" ng-show="current_user().priv == 7"><a href="/webshop/create.jsp">Create Item</a></li>
+					<li id="loginNavBar" ng-show="current_user().name == 'guest'"><a href="login.jsp">Login</a></li>
+					<li id="logoutNavBar" ng-show="current_user().name != 'guest'" ng-click="logout()"><a>Logout</a></li>
+					<li id="userNavBar"><a href="#/"> {{current_user().name;}}</a></li>
+					<li id="cart" ng-show="current_user().priv < 7"><a href="#/"><span class="glyphicon glyphicon-shopping-cart"></span></a></li>
 				</ul>
 				<form class="navbar-form navbar-right" role="search">
 					<div class="input-group">
@@ -58,5 +56,5 @@
 		</div>
 		<!-- /.container-fluid -->
 	</nav>
-</head>
+</body>
 </html>

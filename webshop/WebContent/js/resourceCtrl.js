@@ -1,20 +1,45 @@
-var app = angular.module("WebShop", []);
+var app = angular.module("WebShop", ['ngCookies']);
 
-app.controller("ItemCtrl", function($scope, $http) {
+app.service('loginService', function($cookieStore){
+	return {
+		current_user: function () {
+			var user = {name: "", priv: ""};
+			user.name = $cookieStore.get('user');
+			user.priv = $cookieStore.get('priv');
+			if (user.name == null){
+				user.name = "guest";
+				user.priv = 0;
+			}
+			return user;
+		}, 
+		set_user: function(user){
+			$cookieStore.put('user', user.name);
+			$cookieStore.put('priv', user.priv);
+		}, 
+		unset_user: function(){
+			$cookieStore.remove('user');
+			$cookieStore.remove('priv');
+		}
+	};
+});
+
+app.controller("ItemCtrl", function($scope, $http, $rootScope, loginService) {
 	$scope.baseUrl = "http://localhost:8080/webshop/api/resource/item/";
 	$http.get('http://localhost:8080/webshop/api/resource/item').
 	success(function(data, status, headers, config) {
     	$scope.items = data;
     	$scope.oneSelected = false;
-    	$scope.alert = false;
+    	$rootScope.alert = false;
 	});
 	
 	$scope.getItem = function(id){
+		$scope.comment = {author: "", title1: "", message: ""};
 		$scope.id = $scope.items[id].id;
 		$scope.comments = null;
 		$scope.url = $scope.baseUrl + $scope.id + "/comment";
 		$scope.oneSelected = true;
 		$scope.items = [$scope.items[id]];
+		$scope.comment.author = $scope.current_user().name;
 		$http.get($scope.url).
 		success(function(data, status, headers, config) {
 	    	$scope.comments = data;
@@ -35,19 +60,21 @@ app.controller("ItemCtrl", function($scope, $http) {
 		.then(function success(response) {
 			if (response.data.success){
 				comment.createdAt = moment().format('YYYY-MM-DD HH:mm:ss');
-				console.log(JSON.stringify(response.data));
 				comment.id = response.data.cID;
 				comment.itemID = response.data.itemID;
-				$scope.comments.push(comment);
-				$scope.comment = null;
-				$scope.alert = true;
-				$scope.success = true;
-				$scope.feedback = response.data.feedback;
+				var tmpComment = {author: comment.author, title: comment.title1, message: comment.message, id: comment.id, itemID: comment.itemID, createdAt: comment.createdAt};
+				$scope.comments.push(tmpComment);
+				$rootScope.alert = true;
+				$rootScope.success = true;
+				$rootScope.feedback = response.data.feedback;
+				$scope.comment.message = "";
+				$scope.comment.title1 = "";
 			} else {
-				$scope.alert = true;
-				$scope.success = false;
-				$scope.feedback = response.data.feedback;
+				$rootScope.alert = true;
+				$rootScope.success = false;
+				$rootScope.feedback = response.data.feedback;
 			}
+			
 		});
 		
 	}
@@ -55,17 +82,16 @@ app.controller("ItemCtrl", function($scope, $http) {
 	$scope.deleteComment = function(index){
 		var commID = $scope.comments[index].id;
 		var itemID = $scope.comments[index].itemID;
-		console.log(JSON.stringify($scope.comments[index]));
 		$http.delete('http://localhost:8080/webshop/api/resource/item/' + itemID + '/comment/' + commID)
 		.then(function success(response) {
-			$scope.feedback = response.data.feedback;
+			$rootScope.feedback = response.data.feedback;
 			if (response.data.success){
-				$scope.alert = true;
-				$scope.success = true;
+				$rootScope.alert = true;
+				$rootScope.success = true;
 				$scope.comments.splice(index, 1);
 			} else {
-				$scope.alert = true;
-				$scope.success = false;
+				$rootScope.alert = true;
+				$rootScope.success = false;
 			}
 		});
 	}
@@ -74,14 +100,14 @@ app.controller("ItemCtrl", function($scope, $http) {
 		var id = $scope.items[index].id;
 		$http.delete('http://localhost:8080/webshop/api/resource/item/' + id)
 		.then(function success(response) {
-			$scope.feedback = response.data.feedback;
+			$rootScope.feedback = response.data.feedback;
 			if (response.data.success){
-				$scope.alert = true;
-				$scope.success = true;
+				$rootScope.alert = true;
+				$rootScope.success = true;
 				$scope.comments.splice(index, 1);
 			} else {
-				$scope.alert = true;
-				$scope.success = false;
+				$rootScope.alert = true;
+				$rootScope.success = false;
 			}
 		});
 		$scope.items.splice(index, 1);
@@ -94,20 +120,24 @@ app.controller("ItemCtrl", function($scope, $http) {
 		.then(function success(response) {
 			if (response.data.success){
 		    	$scope.items = $scope.items.push(item);
-		    	$scope.alert = true;
-		    	$scope.success = true;
-		    	$scope.feedback = response.data.feedback;
+		    	$rootScope.alert = true;
+		    	$rootScope.success = true;
+		    	$rootScope.feedback = response.data.feedback;
 		    	$scope.item.title = "";
 		    	$scope.item.description = "";
 		    	$scope.item.price = "";
 		    	$('select').val('').selectpicker('refresh');
 			} else {
-				$scope.alert = true;
-				$scope.success = false;
-				$feedback = response.data.feedback;
+				$rootScope.alert = true;
+				$rootScope.success = false;
+				$rootScope.feedback = response.data.feedback;
 			}
 		});
 	}
+	
+	$scope.current_user = function() {
+		return loginService.current_user();
+	};
 });
 
 app.controller("CategoryCtrl", function($scope, $http){
@@ -116,7 +146,6 @@ app.controller("CategoryCtrl", function($scope, $http){
 	$http.get($scope.baseUrl).
 	success(function(data, status, headers, config){
     	$scope.categories = data;
-    	console.log(JSON.stringify(data));
     	$scope.oneSelected = false;
     	$scope.created = false;
     	$scope.deleted = false;
@@ -157,5 +186,49 @@ app.controller("CategoryCtrl", function($scope, $http){
 			}
 		});
 		
+	}
+});
+
+app.controller("LoginCtrl", function($scope, $http, loginService, $rootScope, $cookieStore){
+	$scope.login = function(user){
+		$http.post('http://localhost:8080/webshop/api/resource/login', JSON.stringify(user))
+		.then(function success(response){
+			$rootScope.feedback = response.data.feedback;
+			$rootScope.alert = true;
+			$rootScope.success = response.data.success;
+			if (response.data.success){
+				var tmpUser = {name: "", priv: "", session: ""};
+				tmpUser.name = response.data.name;
+				tmpUser.priv = response.data.priv;
+				loginService.set_user(tmpUser);
+			} else {
+				loginService.unset_user();
+			}
+		});
+	}
+	
+	$scope.current_user = function() {
+		return loginService.current_user();
+	};
+	
+	$scope.logout = function() {
+		$http.post("http://localhost:8080/webshop/api/resource/logout", JSON.stringify($scope.current_user()))
+		.then(function success(response){
+			if (response.data.success){
+				$rootScope.alert = true;
+				$rootScope.success = true;
+				$rootScope.feedback = response.data.feedback;
+				loginService.unset_user();
+			}
+		});
+	}
+	
+	$scope.register = function(user) {
+		$http.post('http://localhost:8080/webshop/api/resource/register', JSON.stringify(user))
+		.then(function success(response){
+			$rootScope.feedback = response.data.feedback;
+			$rootScope.alert = true;
+			$rootScope.success = response.data.success;
+		});
 	}
 });

@@ -19,7 +19,7 @@
 		<div class="col-xs-10 col-md-10 col-sm-10 col-lg-10" ng-app="WebShop" ng-controller="ItemCtrl">
 			<form class="form-group">
 				<label for="author">Author</label>
-				<input id="author" class="form-control" name="author"  value="<%out.println(User.getInstance().getUsername());%>" readonly/>
+				<input id="author" class="form-control" name="author"  value="{{current_user().name}}" readonly/>
 				<br>
 				<label for="title">Title</label>
 				<input class="form-control" name="title" ng-model="item.title" />

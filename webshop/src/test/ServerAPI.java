@@ -30,9 +30,6 @@ import models.Category;
 import models.Comment;
 import models.Item;
 import models.User;
-import resources.Login;
-import resources.Logout;
-import resources.Register;
 import resources.Resource;
 
 
@@ -257,7 +254,7 @@ public class ServerAPI extends JerseyTest {
     	assertEquals(feedback.get("feedback").getAsString(), "Delete not successfull");
     }
     
-    
+/*
     // test login
     @Test 
     public void testLogin() throws SQLException, ClassNotFoundException, ServletException, IOException {
@@ -325,5 +322,5 @@ public class ServerAPI extends JerseyTest {
         new Register(db).doPost(request,response);
         assertEquals("Registration failed", Resource.getFeedback());
     }
-    
+*/ 
 }

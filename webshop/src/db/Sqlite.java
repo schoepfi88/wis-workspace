@@ -416,7 +416,7 @@ public class Sqlite {
 		return comments;
 	}
 	
-	public ArrayList<String> login(String name, String password) throws ClassNotFoundException, SQLException{
+	public ArrayList<String> login(String name, String password, String token) throws ClassNotFoundException, SQLException{
 		ArrayList<String> userData = new ArrayList<>();
 		Class.forName("org.sqlite.JDBC");
 		Connection connection = DriverManager
@@ -425,6 +425,7 @@ public class Sqlite {
 				.prepareStatement("Select * from user where user_name like ? and password like ?;");
 		pstmt.setString(1, name);
 		pstmt.setString(2, password);
+		// TODO save token in db
 		ResultSet rs = pstmt.executeQuery();
 		if (rs.next()) {
 			userData.add(Integer.toString(rs.getInt(1)));

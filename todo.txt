@@ -1,12 +1,18 @@
 -save session id at server and check if user exists with this session id
 +load items of category (in category.jsp)
--warenkorb
--admin benutzersystem
--search for item (optional)
--login ausblenden wenn eingeloggt, loggout ausblenden wenn ausgeloggt
+-warenkorb C
++admin benutzersystem
+-search for item (optional) B
++login ausblenden wenn eingeloggt, loggout ausblenden wenn ausgeloggt
 +alle feedbacks mit angular
 +fehlerbehandlung (feedback)
--input validieren
--compile source files with maven (für abgabe)
--category already exists in db should return "creation not possible"
--db path relativ -> also tests must run
+-input validieren B
+-compile source files with maven (für abgabe) B
+-category already exists in db should return "creation not possible" C
+-db path relativ -> also tests must run B
+-test register, login, logout (weil jetzt alles über angular) B&C
+-server side tests ob session_id und username existieren C
+-paypal B&C
++angular umstellung für login, register C
+
+info: user privilegien == 7 admin, < 7 alle anderen
