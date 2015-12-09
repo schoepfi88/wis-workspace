@@ -89,6 +89,10 @@
 	cursor:pointer;
 }
 
+.count-picker {
+	margin-left: 10px !important;
+}
+
 #cart {
 	font-size: 18px;
 }

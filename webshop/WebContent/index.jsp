@@ -46,7 +46,7 @@
 							<div ng-show="current_user().priv == 7" id="delbtn" class="btn btn-danger btn-sm" ng-click="deleteItem($index)">
 								<span class="glyphicon glyphicon-trash"></span>
 							</div>
-							<div ng-show="current_user().priv < 7" id="addbtn" class="btn btn-success btn-sm">
+							<div ng-show="current_user().priv < 7" ng-click="addToCart(item)" id="addbtn" class="btn btn-success btn-sm">
 								<span class="glyphicon glyphicon-plus"></span>
 							</div>
 						</span>

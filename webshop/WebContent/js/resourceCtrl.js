@@ -23,13 +23,48 @@ app.service('loginService', function($cookieStore){
 	};
 });
 
-app.controller("ItemCtrl", function($scope, $http, $rootScope, loginService) {
+
+app.service('cartService', function($cookieStore){
+	return {
+		setItems: function(items){
+			$cookieStore.put('itemsCount', items.length);
+			for (var i = 0; i < items.length; i++){
+				$cookieStore.put('id'+i, items[i].id);
+			}
+		}, 
+		getItems: function(){
+			var itemsCount = $cookieStore.get('itemsCount');
+			var items = [];
+			for (var i = 0; i < itemsCount; i++){
+				items.push($cookieStore.get('id'+i));
+			}
+			return items;
+		},
+		removeItem: function(index){
+			$cookieStore.remove('id'+index);
+		}
+	};
+});
+
+app.controller("ItemCtrl", function($scope, $http, $rootScope, loginService, cartService) {
 	$scope.baseUrl = "http://localhost:8080/webshop/api/resource/item/";
 	$http.get('http://localhost:8080/webshop/api/resource/item').
 	success(function(data, status, headers, config) {
     	$scope.items = data;
     	$scope.oneSelected = false;
     	$rootScope.alert = false;
+    	if ($scope.cartItems == null)
+			$scope.cartItems = [];
+    	var cartItemIDs = cartService.getItems();
+    	console.log(cartItemIDs);
+    	$scope.sum = 0;
+    	for (var i = 0; i < $scope.items.length; i++){
+    		if (cartItemIDs.indexOf($scope.items[i].id) >= 0){
+    			$scope.cartItems.push($scope.items[i]);
+    			$scope.sum += $scope.items[i].price;
+    		}
+    	}
+    	$scope.numbers = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
 	});
 	
 	$scope.getItem = function(id){
@@ -135,9 +170,41 @@ app.controller("ItemCtrl", function($scope, $http, $rootScope, loginService) {
 		});
 	}
 	
+	$scope.addToCart = function(item) {
+		if ($scope.cartItems == null)
+			$scope.cartItems = [];
+		$scope.cartItems.push(item);
+		console.log(JSON.stringify($scope.cartItems));
+		cartService.setItems($scope.cartItems);
+	}
+	
+	$scope.removeFromCart = function(index) {
+		$scope.cartItems.splice(index, 1);
+		cartService.removeItem(index);
+		$scope.sum = 0;
+		for (var i = 0; i < $scope.cartItems.length; i++){
+    			$scope.sum += $scope.items[i].price * $("#counter"+i).val();;
+    	}
+	}
+	
 	$scope.current_user = function() {
 		return loginService.current_user();
 	};
+	
+	// change listener when counter of item changes
+	$scope.sum_up = function() {
+		var total = 0;
+		if ($scope.cartItems != null){
+			for (var i = 0; i < $scope.cartItems.length; i++){
+					total = total + ($scope.cartItems[i].price * parseInt($('#counter' + i).val()));
+	    	}
+		}
+		$scope.sum = total;
+		$('#total').html("Total: " + total + " $");
+	};
+	
+
+	$(document).on('change','.selectpicker', $scope.sum_up);
 });
 
 app.controller("CategoryCtrl", function($scope, $http){

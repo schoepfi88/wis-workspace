@@ -444,7 +444,7 @@ public class Sqlite {
 				.prepareStatement("INSERT INTO user (user_name, password, privilege) VALUES (?, ?, ?)");
 		pstmt.setString(1, username);
 		pstmt.setString(2, password);
-		pstmt.setInt(3, 7);
+		pstmt.setInt(3, 2);			// admin 7 normal user 2 
 
 		int ctrl = pstmt.executeUpdate();
 		return ctrl;

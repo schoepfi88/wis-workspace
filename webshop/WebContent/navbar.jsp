@@ -15,6 +15,7 @@
 	<script type="text/javascript" src="js/resourceCtrl.js"></script>
 	<script type="text/javascript" src="js/bootstrap-select.min.js"></script>
 	<script type="text/javascript" src="js/moment.min.js"></script>
+	<script type="text/javascript" src="js/control.js"></script>
 </head>
 <body ng-app="WebShop" ng-controller="LoginCtrl">
 	<nav class="navbar navbar-default">
@@ -40,7 +41,7 @@
 					<li id="loginNavBar" ng-show="current_user().name == 'guest'"><a href="login.jsp">Login</a></li>
 					<li id="logoutNavBar" ng-show="current_user().name != 'guest'" ng-click="logout()"><a>Logout</a></li>
 					<li id="userNavBar"><a href="#/"> {{current_user().name;}}</a></li>
-					<li id="cart" ng-show="current_user().priv < 7"><a href="#/"><span class="glyphicon glyphicon-shopping-cart"></span></a></li>
+					<li id="cart" ng-show="current_user().priv < 7"><a onclick="location.href='/webshop/cart.jsp'"><span class="glyphicon glyphicon-shopping-cart"></span></a></li>
 				</ul>
 				<form class="navbar-form navbar-right" role="search">
 					<div class="input-group">
