@@ -14,5 +14,6 @@
 -server side tests ob session_id und username existieren C
 -paypal B&C
 +angular umstellung für login, register C
-
+-add to cart button at categories (when items listed) C
+-logout -> destroy cookie C
 info: user privilegien == 7 admin, < 7 alle anderen
