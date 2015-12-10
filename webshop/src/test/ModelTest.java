@@ -21,7 +21,7 @@ public class ModelTest {
 	public void init(){
 		i = new Item();
 		c = new Category();
-		u = User.getInstance();
+		u = new User();
 		com = new Comment();
 	}
 
@@ -74,7 +74,7 @@ public class ModelTest {
 		assertEquals("guest", u.getUsername());
 		assertEquals(0, u.getId());
 		assertEquals(1, u.getPrivilege());
-		u.setUser(2, "testuser", 3);
+		u.setUser(2, "testuser", 3, "token");
 		assertEquals("testuser", u.getUsername());
 		assertEquals(2, u.getId());
 		assertEquals(3, u.getPrivilege());

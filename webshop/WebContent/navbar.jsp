@@ -18,7 +18,7 @@
 	<script type="text/javascript" src="js/control.js"></script>
 </head>
 <body ng-app="WebShop" ng-controller="LoginCtrl">
-	<nav class="navbar navbar-default">
+	<nav class="navbar navbar-default" ng-init="checkLogin()">
 		<div class="container-fluid">
 			<!-- mobile use -->
 			<div class="navbar-header">
@@ -41,7 +41,7 @@
 					<li id="loginNavBar" ng-show="current_user().name == 'guest'"><a href="login.jsp">Login</a></li>
 					<li id="logoutNavBar" ng-show="current_user().name != 'guest'" ng-click="logout()"><a>Logout</a></li>
 					<li id="userNavBar"><a href="#/"> {{current_user().name;}}</a></li>
-					<li id="cart" ng-show="current_user().priv < 7"><a onclick="location.href='/webshop/cart.jsp'"><span class="glyphicon glyphicon-shopping-cart"></span></a></li>
+					<li id="cart" ng-show="current_user().priv < 7 && current_user().priv != 0"><a onclick="location.href='/webshop/cart.jsp'"><span class="glyphicon glyphicon-shopping-cart"></span></a></li>
 				</ul>
 				<form class="navbar-form navbar-right" role="search">
 					<div class="input-group">

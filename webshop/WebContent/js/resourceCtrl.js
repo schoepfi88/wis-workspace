@@ -56,7 +56,6 @@ app.controller("ItemCtrl", function($scope, $http, $rootScope, loginService, car
     	if ($scope.cartItems == null)
 			$scope.cartItems = [];
     	var cartItemIDs = cartService.getItems();
-    	console.log(cartItemIDs);
     	$scope.sum = 0;
     	for (var i = 0; i < $scope.items.length; i++){
     		if (cartItemIDs.indexOf($scope.items[i].id) >= 0){
@@ -174,7 +173,6 @@ app.controller("ItemCtrl", function($scope, $http, $rootScope, loginService, car
 		if ($scope.cartItems == null)
 			$scope.cartItems = [];
 		$scope.cartItems.push(item);
-		console.log(JSON.stringify($scope.cartItems));
 		cartService.setItems($scope.cartItems);
 	}
 	
@@ -296,6 +294,16 @@ app.controller("LoginCtrl", function($scope, $http, loginService, $rootScope, $c
 			$rootScope.feedback = response.data.feedback;
 			$rootScope.alert = true;
 			$rootScope.success = response.data.success;
+		});
+	}
+	
+	$scope.checkLogin = function() {
+		var u = $scope.current_user();
+		$http.post("http://localhost:8080/webshop/api/resource/checkAuth", JSON.stringify($scope.current_user()))
+		.then(function success(response){
+			if (!response.data.success){
+				loginService.unset_user();
+			}
 		});
 	}
 });

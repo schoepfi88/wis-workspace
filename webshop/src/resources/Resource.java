@@ -1,38 +1,28 @@
 package resources;
 
-import java.io.IOException;
-import java.net.URI;
-import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.CookieParam;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
-
 import org.eclipse.jetty.http.HttpStatus;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import db.Sqlite;
 import models.Item;
 import models.User;
+import models.ActiveUser;
 import models.Category;
 import models.Comment;
 
@@ -61,21 +51,30 @@ public class Resource {
 		return items;
 	}
 	
-	@GET
-	@Produces({ MediaType.APPLICATION_JSON })
-	@Path("/item/{id}")
-	public Item getItem(@PathParam("id") int id) throws ClassNotFoundException {
-		Item item = db.getItem(id);
-		return item;
-	}
-	
 	@POST
 	@Path("/item")
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response newItem(String jsonString) throws IOException, ClassNotFoundException {
-		Item item = new GsonBuilder().create().fromJson(jsonString, Item.class);
+	public Response newItem(String jsonString,
+			@CookieParam(value = "JSESSIONID") String token,
+			@CookieParam(value = "user") String user) throws ClassNotFoundException {
+		boolean allowed = false;
+		if (user != null)
+			user = user.split("%22")[1];
+		try {
+			allowed = db.checkAuth(user, token) && db.checkPriv(user);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		ResponseBuilder response = null;
+		
+		if (!allowed){
+			response = Response.status(HttpStatus.METHOD_NOT_ALLOWED_405);
+			return response.build();
+		}
+		Item item = new GsonBuilder().create().fromJson(jsonString, Item.class);
 		JsonObject json = new JsonObject();
 		boolean success = db.createItem(item);
 		if (success){
@@ -94,9 +93,27 @@ public class Resource {
 	@DELETE
 	@Path("/item/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteItem(@PathParam("id") int id) throws ClassNotFoundException {
+	public Response deleteItem(@PathParam("id") int id,
+			@CookieParam(value = "JSESSIONID") String token,
+			@CookieParam(value = "user") String user) throws ClassNotFoundException {
+		boolean allowed = false;
+		if (user != null)
+			user = user.split("%22")[1];
+		try {
+			allowed = db.checkAuth(user, token) && db.checkPriv(user);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		ResponseBuilder response = Response.status(200);
+		ResponseBuilder response = null;
+		
+		if (!allowed){
+			response = Response.status(HttpStatus.METHOD_NOT_ALLOWED_405);
+			return response.build();
+		}
+		
+		response = Response.status(200);
 		JsonObject json = new JsonObject();
 		int rA = db.deleteItem(id); //rA = rows affected
 		if(rA >0){
@@ -128,10 +145,27 @@ public class Resource {
 	@Path("/category")
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response newCat(String jsonString) throws IOException, ClassNotFoundException {
+	public Response newCat(String jsonString, 
+			@CookieParam(value = "JSESSIONID") String token,
+			@CookieParam(value = "user") String user) throws ClassNotFoundException {
+		boolean allowed = false;
+		if (user != null)
+			user = user.split("%22")[1];
+		try {
+			allowed = db.checkAuth(user, token) && db.checkPriv(user);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		ResponseBuilder response = null;
+		
+		if (!allowed){
+			response = Response.status(HttpStatus.METHOD_NOT_ALLOWED_405);
+			return response.build();
+		}
 		Category cat = new GsonBuilder().create().fromJson(jsonString, Category.class);
 		boolean success = db.createCategory(cat);
-		ResponseBuilder response = null;
 		JsonObject json = new JsonObject();
 		if (success){
 			response = Response.status(HttpStatus.CREATED_201);
@@ -149,8 +183,26 @@ public class Resource {
 	@DELETE
 	@Path("/category/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteCategory(@PathParam("id") int id) throws ClassNotFoundException {
-		ResponseBuilder response = Response.status(200);
+	public Response deleteCategory(@PathParam("id") int id,
+			@CookieParam(value = "JSESSIONID") String token,
+			@CookieParam(value = "user") String user) throws ClassNotFoundException {
+		boolean allowed = false;
+		if (user != null)
+			user = user.split("%22")[1];
+		try {
+			allowed = db.checkAuth(user, token) && db.checkPriv(user);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		ResponseBuilder response = null;
+		
+		if (!allowed){
+			response = Response.status(HttpStatus.METHOD_NOT_ALLOWED_405);
+			return response.build();
+		}
+		response = Response.status(200);
 		JsonObject json = new JsonObject();
 		int rA = db.deleteCategory(id); //rA = rows affected
 		if(rA >0){
@@ -168,9 +220,26 @@ public class Resource {
 	@Path("/item/{id}/comment")
 	@Produces(MediaType.TEXT_HTML)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response newComment(String json, @PathParam("id") int item_id) throws IOException, ClassNotFoundException {
-		Comment comment = new GsonBuilder().create().fromJson(json, Comment.class);
+	public Response newComment(String json, @PathParam("id") int item_id,
+			@CookieParam(value = "JSESSIONID") String token,
+			@CookieParam(value = "user") String user) throws ClassNotFoundException {
+		boolean allowed = false;
+		if (user != null)
+			user = user.split("%22")[1];
+		try {
+			allowed = db.checkAuth(user, token);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		ResponseBuilder response = null;
+		
+		if (!allowed){
+			response = Response.status(HttpStatus.METHOD_NOT_ALLOWED_405);
+			return response.build();
+		}
+		Comment comment = new GsonBuilder().create().fromJson(json, Comment.class);
 		comment.setItemID(item_id);
 		JsonObject jsonO = new JsonObject();
 		int success = db.createComment(comment);
@@ -192,8 +261,24 @@ public class Resource {
 	@DELETE
 	@Path("/item/{id}/comment/{cid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteComment(@PathParam("id") int itemID, @PathParam("cid") int commID) throws ClassNotFoundException {
+	public Response deleteComment(@PathParam("id") int itemID, @PathParam("cid") int commID,
+			@CookieParam(value = "JSESSIONID") String token,
+			@CookieParam(value = "user") String user) throws ClassNotFoundException {
+		boolean allowed = false;
+		if (user != null)
+			user = user.split("%22")[1];
+		try {
+			allowed = db.checkAuth(user, token) && db.checkPriv(user);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		ResponseBuilder response = null;
+		if (!allowed){
+			response = Response.status(HttpStatus.METHOD_NOT_ALLOWED_405);
+			return response.build();
+		}
 		JsonObject json = new JsonObject();
 		int rA = db.deleteComment(itemID, commID); //rA = rows affected
 		if(rA >0){
@@ -230,14 +315,13 @@ public class Resource {
 	@Path("/login")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response login(String json, @Context HttpServletRequest request){
+	public Response login(String json, @CookieParam(value = "JSESSIONID") String token){
 		ResponseBuilder response = Response.status(200);
 		JsonObject jsonUser = new Gson().fromJson(json, JsonObject.class);
 		String usr = jsonUser.get("name").getAsString();
 		String pass = jsonUser.get("password").getAsString();
 		ArrayList<String> userData = null;
 		JsonObject jsonObj = new JsonObject();
-	    String token = request.getSession(true).getId();
 		try {
 			userData = db.login(usr, pass, token);
 		} catch (ClassNotFoundException | SQLException e) {
@@ -247,13 +331,13 @@ public class Resource {
 		if (userData.size() > 0) {
 			jsonObj.addProperty("feedback", "Login successfully");
 			jsonObj.addProperty("success", true);
-			User user = User.getInstance();
-			user.setUser(Integer.parseInt(userData.get(0)), userData.get(1), Integer.parseInt(userData.get(2)));
+			User user = new User();
+			user.setUser(Integer.parseInt(userData.get(0)), userData.get(1), Integer.parseInt(userData.get(2)), token);
+			ActiveUser.getInstance().addUser(user);
 			jsonObj.addProperty("name", user.getUsername());
 			jsonObj.addProperty("priv", user.getPrivilege());
 			jsonObj.addProperty("auth", token);
 		} else {
-			User.getInstance().unsetUser();
 			jsonObj.addProperty("feedback", "Login failed");
 			jsonObj.addProperty("success", false);
 		}
@@ -267,19 +351,10 @@ public class Resource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response logout(String json){
-		JsonObject jsonUser = new Gson().fromJson(json, JsonObject.class);
-		String usr = jsonUser.get("name").getAsString();
 		ResponseBuilder response = Response.status(200);
 		JsonObject jsonObj = new JsonObject();
-		User user = User.getInstance();
-		if (usr.equals(user.getUsername())){
-			user.unsetUser();
-			jsonObj.addProperty("feedback", "Logout successfully");
-			jsonObj.addProperty("success", true);
-		} else {
-			jsonObj.addProperty("feedback", "Logout failed");
-			jsonObj.addProperty("success", false);
-		}
+		jsonObj.addProperty("feedback", "Logout successfully");
+		jsonObj.addProperty("success", true);
 		response.entity(jsonObj.toString());
 		return response.build();
 	}
@@ -288,7 +363,7 @@ public class Resource {
 	@Path("/register")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response register(String json, @Context HttpServletRequest request){
+	public Response register(String json, @CookieParam(value = "JSESSIONID") String token){
 		
 		ResponseBuilder response = Response.status(200);
 		JsonObject jsonUser = new Gson().fromJson(json, JsonObject.class);
@@ -296,7 +371,6 @@ public class Resource {
 		String pass = jsonUser.get("password").getAsString();
 		ArrayList<String> userData = null;
 		JsonObject jsonObj = new JsonObject();
-	    String token = request.getSession(true).getId();
 	    // TODO token in db
 	    int success = 0;
 		try {
@@ -318,33 +392,34 @@ public class Resource {
 		return response.build();
 	}
 	
-	public static String getFeedback(){
-		return feedback;
-	}
-
-	public static void setFeedback(String feed){
-		feedback = feed;
-		feedbackTrigger = loadTrigger +1;
+	@POST
+	@Path("/checkAuth")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response chechAuth(String json, @CookieParam(value = "JSESSIONID") String token){
+		
+		ResponseBuilder response = Response.status(200);
+		JsonObject jsonUser = new Gson().fromJson(json, JsonObject.class);
+		String usr = jsonUser.get("name").getAsString();
+		JsonObject jsonObj = new JsonObject();
+	    boolean success = false;
+		try {
+			success = db.checkAuth(usr, token);
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+		if (success) {
+			jsonObj.addProperty("feedback", "");
+			jsonObj.addProperty("success", true);
+		} else {
+			jsonObj.addProperty("feedback", "");
+			jsonObj.addProperty("success", false);
+		}
+			
+		response.entity(jsonObj.toString());
+		return response.build();
 	}
 	
-	public static int getFeedbackTrigger(){
-		return feedbackTrigger;
-	}
-	
-	public static int getLoadTrigger(){
-		return loadTrigger;
-	}
-	
-	public static void incLoadTrigger(){
-		loadTrigger++;
-	}
-	
-	public static void setError(String error){
-		feedback = error;
-		errorTrigger = loadTrigger +1;
-	}
-	
-	public static int getErrorTrigger(){
-		return errorTrigger;
-	}
 } 

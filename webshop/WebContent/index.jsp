@@ -79,8 +79,8 @@
 								</span>
 							</div>
 						</div>
-						<h2 class="h2">Create Comment</h2>
-				  		<form class="form-group" id="commentForm" method="POST">
+						<h2 ng-show="current_user().priv > 0" class="h2">Create Comment</h2>
+				  		<form ng-show="current_user().priv > 0" class="form-group" id="commentForm" method="POST">
 							<label for="author">Author</label>
 							<input class="form-control" ng-model="comment.author" name="author" readonly/>
 							<br>

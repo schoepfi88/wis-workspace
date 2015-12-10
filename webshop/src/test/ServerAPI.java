@@ -3,6 +3,7 @@ package test;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.ws.rs.core.Application;
@@ -23,6 +24,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.stream.JsonReader;
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import db.Sqlite;
@@ -82,7 +85,6 @@ public class ServerAPI extends JerseyTest {
 		coms.add(c2);
     	try {
     		// mock the database
-			Mockito.when(db.getItem(1)).thenReturn(i);
 			Mockito.when(db.getItems()).thenReturn(items);
 			Mockito.when(db.createItem(i)).thenReturn(true);
 			Mockito.when(db.deleteItem(1)).thenReturn(1);
@@ -96,7 +98,9 @@ public class ServerAPI extends JerseyTest {
 			Mockito.when(db.createComment(c)).thenReturn(1);
 			Mockito.when(db.deleteComment(1, 1)).thenReturn(1);
 			Mockito.when(db.deleteComment(1, 2)).thenReturn(0);
-		} catch (ClassNotFoundException e) {
+			Mockito.when(db.checkAuth(null, null)).thenReturn(true);
+			Mockito.when(db.checkPriv(null)).thenReturn(true);
+		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -109,15 +113,6 @@ public class ServerAPI extends JerseyTest {
     /***********************************************************
      * API tests
      ***********************************************************/
-    // get item with id 1
-    @Test
-    public void testGetItem() throws ClassNotFoundException {
-    	String jsonString = target("resource/item/1").request().get(String.class);
-    	JsonObject item = new Gson().fromJson(jsonString, JsonObject.class);
-    	//Mockito.verify(db, Mockito.times(1)).getItem(1);
-        assertEquals("Apple", item.get("title").getAsString());
-    }
-    
     // get items
     @Test
     public void testGetItems(){
@@ -251,6 +246,7 @@ public class ServerAPI extends JerseyTest {
     public void testDeleteCommentFail(){
     	String jsonString = target("resource/item/1/comment/2").request().delete().readEntity(String.class);
     	JsonObject feedback = new Gson().fromJson(jsonString, JsonObject.class);
+    	System.out.println(feedback);
     	assertEquals(feedback.get("feedback").getAsString(), "Delete not successfull");
     }
     

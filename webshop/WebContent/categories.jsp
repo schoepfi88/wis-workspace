@@ -48,9 +48,13 @@
 							<li class="list-group-item itemBody">{{item.description}}
 						  	<span class="price">
 								{{item.price}} $
-							</li>
-						</span>
-						  
+								<div ng-show="current_user().priv == 7" id="delbtn" class="btn btn-danger btn-sm btn-higher" ng-click="deleteItem($index)">
+									<span class="glyphicon glyphicon-trash"></span>
+								</div>
+								<div ng-show="current_user().priv < 7" ng-click="addToCart(item)" id="addbtn" class="btn btn-success btn-sm btn-higher">
+									<span class="glyphicon glyphicon-plus"></span>
+								</div>
+							</span>
 						  </li>
 						</ul>
 					</div>

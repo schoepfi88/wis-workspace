@@ -1,30 +1,24 @@
 package models;
 
 public class User {
-	private static User instance = null;
 	private int id;
 	private String username;
 	private int privilege;
 	private String password;
+	private String token;
 	
 	
-	private User(){
+	public User(){
 		this.id = 0;
 		this.username = "guest";
 		this.privilege = 1;
 	}
 
-	public static User getInstance(){
-		if(instance == null){
-			instance = new User();
-		}
-		return instance;
-	}
-
-	public void setUser(int id, String username, int privilege){
+	public void setUser(int id, String username, int privilege, String token){
 		this.id = id;
 		this.username = username;
 		this.privilege = privilege;
+		this.token = token;
 	}
 	public void unsetUser(){
 		this.id = 0;
@@ -44,8 +38,24 @@ public class User {
 		return privilege;
 	}
 	
+	public String getToken() {
+		return token;
+	}
+	
 	public String getPassword(){
 		return password;
 	}
+	
+	@Override
+    public boolean equals(Object object){
+        boolean sameSame = false;
+
+        if (object != null && object instanceof User){
+        	return this.username.equals(((User) object).getUsername()) && this.privilege == ((User) object).getPrivilege() &&
+        			this.token.equals(((User) object).getToken());
+        }
+
+        return sameSame;
+    }
 
 }

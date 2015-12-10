@@ -93,6 +93,10 @@
 	margin-left: 10px !important;
 }
 
+.btn-higher {
+	margin-top: -5px;
+}
+
 #cart {
 	font-size: 18px;
 }

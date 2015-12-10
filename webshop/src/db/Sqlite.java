@@ -2,12 +2,9 @@ package db;
 
 import java.sql.*;
 import java.util.ArrayList;
-import javax.sql.RowSet;
 import models.Category;
 import models.Comment;
 import models.Item;
-import models.User;
-import resources.Resource;
 
 import org.sqlite.SQLiteJDBCLoader;
 
@@ -148,39 +145,6 @@ public class Sqlite {
 		return items;
 	}
 
-	public Item getItem(int id) throws ClassNotFoundException {
-
-		Item item = new Item();
-		Class.forName("org.sqlite.JDBC");
-		try {
-			// create a database connection
-			Connection c = DriverManager
-					.getConnection(dbPath);
-			c.setAutoCommit(false);
-			System.out.println("Opened database successfully");
-
-			
-			PreparedStatement pstmt = c.prepareStatement("SELECT * FROM item WHERE id like ?");
-			pstmt.setInt(1, id);
-			
-			ResultSet rs = pstmt.executeQuery();
-			item.setId(rs.getInt("id"));
-			item.setTitle(rs.getString("title1"));
-			item.setAuthor(rs.getString("author"));
-			item.setDescription(rs.getString("description"));
-			item.setPrice(rs.getFloat("price"));
-
-			rs.close();
-			pstmt.close();
-			c.close();
-		} catch (Exception e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
-			System.exit(0);
-		}
-		System.out.println("Operation done successfully");
-		return item;
-	}
-
 	public boolean createItem(Item item) throws ClassNotFoundException {
 		Class.forName("org.sqlite.JDBC");
 		try {
@@ -242,6 +206,18 @@ public class Sqlite {
 			SQLiteDataSource dataSource = new SQLiteDataSource();
 			dataSource.setUrl(dbPath);
 			Connection c = dataSource.getConnection();
+			// check if exists
+			PreparedStatement pst = c.prepareStatement("Select * from category where name like ?");
+			pst.setString(1, cat.getName());
+			ResultSet rs = pst.executeQuery();
+			if (rs.next()){
+				pst.close();
+				rs.close();
+				c.close();
+				System.out.println(" false ret");
+				return false;
+			}
+			
 			c.setAutoCommit(false);
 			System.out.println("Opened database successfully");
 			Statement stmt = c.createStatement();
@@ -431,7 +407,26 @@ public class Sqlite {
 			userData.add(Integer.toString(rs.getInt(1)));
 			userData.add(rs.getString(2));
 			userData.add(Integer.toString(rs.getInt(4)));
-		} 
+		}
+		rs.close();
+		pstmt.close();
+		
+		PreparedStatement pstmt1 = null;
+		pstmt = connection.prepareStatement("Select * from auth where session like ? and user like ?");
+		pstmt.setString(1, name);
+		pstmt.setString(2, token);
+		rs = pstmt.executeQuery();
+		System.out.println(rs.getRow());
+		if (!rs.next()){
+			System.out.println(rs.getRow());
+			pstmt1 = connection.prepareStatement("Insert into auth (session, user) values (?,?)");
+			pstmt1.setString(1, name);
+			pstmt1.setString(2, token);
+			pstmt1.executeUpdate();
+			pstmt1.close();
+		}
+		pstmt.close();
+		
 		return userData;
 	}
 	
@@ -449,4 +444,49 @@ public class Sqlite {
 		int ctrl = pstmt.executeUpdate();
 		return ctrl;
 	}
+	
+	public boolean checkAuth(String name, String token) throws SQLException, ClassNotFoundException{
+		Class.forName("org.sqlite.JDBC");
+
+		Connection connection = DriverManager.getConnection(dbPath);
+		
+		PreparedStatement pstmt = connection
+				.prepareStatement("Select * from auth where session like ? and user like ?");
+		pstmt.setString(1, name);
+		pstmt.setString(2, token);
+		System.out.println(name + " " + token);
+		ResultSet rs = pstmt.executeQuery();
+		if (rs.next()){
+			rs.close();
+			pstmt.close();
+			return true;
+		}
+		rs.close();
+		pstmt.close();
+		connection.close();
+		return false;
+	}
+	
+	public boolean checkPriv(String name) throws SQLException, ClassNotFoundException {
+		Class.forName("org.sqlite.JDBC");
+
+		Connection connection = DriverManager.getConnection(dbPath);
+		
+		PreparedStatement pstmt = connection
+				.prepareStatement("Select * from user where user_name like ?");
+		pstmt.setString(1, name);
+		ResultSet rs = pstmt.executeQuery();
+		if (rs.next()){
+			int priv = rs.getInt("privilege");
+			rs.close();
+			pstmt.close();
+			if (priv > 6)
+				return true;
+		}
+		rs.close();
+		pstmt.close();
+		connection.close();
+		return false;
+	}
+	
 }
