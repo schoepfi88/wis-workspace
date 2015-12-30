@@ -43,6 +43,7 @@ public class ServerAPI extends JerseyTest {
 	private Category cat;
 	private Comment c;
 	
+	
 	// register packages and resource class with mocked database
 	@Override
     protected Application configure() {
@@ -83,6 +84,10 @@ public class ServerAPI extends JerseyTest {
 		ArrayList<Comment> coms = new ArrayList<>();
 		coms.add(c);
 		coms.add(c2);
+		ArrayList<String> userData = new ArrayList<>();
+		userData.add("0");
+		userData.add("me");
+		userData.add("2");
     	try {
     		// mock the database
 			Mockito.when(db.getItems()).thenReturn(items);
@@ -100,6 +105,10 @@ public class ServerAPI extends JerseyTest {
 			Mockito.when(db.deleteComment(1, 2)).thenReturn(0);
 			Mockito.when(db.checkAuth(null, null)).thenReturn(true);
 			Mockito.when(db.checkPriv(null)).thenReturn(true);
+			Mockito.when(db.login("me", "secret", null)).thenReturn(userData);
+			Mockito.when(db.login("me", "false", null)).thenReturn(new ArrayList<>());
+			Mockito.when(db.register("new", "secret")).thenReturn(1);
+			Mockito.when(db.register("new", "fail")).thenReturn(0);
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -250,73 +259,75 @@ public class ServerAPI extends JerseyTest {
     	assertEquals(feedback.get("feedback").getAsString(), "Delete not successfull");
     }
     
-/*
+
     // test login
     @Test 
     public void testLogin() throws SQLException, ClassNotFoundException, ServletException, IOException {
-    	HttpServletRequest request = Mockito.mock(HttpServletRequest.class);       
-        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
-        ArrayList<String> userData = new ArrayList<>();
-        userData.add("1");	// id
-        userData.add("me");	// name
-        userData.add("1");	// privileges
-        Mockito.when(db.login("me", "secret")).thenReturn(userData);
-        Mockito.when(request.getParameter("name")).thenReturn("me");
-        Mockito.when(request.getParameter("password")).thenReturn("secret");
-        new Login(db).doPost(request,response);
-        assertEquals("Login successfull", Resource.getFeedback());
-        assertEquals(User.getInstance().getUsername(), "me");
+    	JsonObject user = new JsonObject();
+    	user.addProperty("name", "me");
+    	user.addProperty("password", "secret");
+        String inputString = new Gson().toJson(user);
+    	Entity<String> entity = Entity.entity(inputString, MediaType.APPLICATION_JSON);
+    	String jsonString = target("resource/login").request().post(entity).readEntity(String.class);
+    	JsonObject logObj = new Gson().fromJson(jsonString, JsonObject.class);
+    	assertEquals(logObj.get("success").getAsBoolean(), true);
+    	assertEquals(logObj.get("feedback").getAsString(), "Login successfully");
     }
     
     // test logout
     @Test 
     public void testLogout() throws ServletException, IOException, ClassNotFoundException, SQLException {
-    	HttpServletRequest request = Mockito.mock(HttpServletRequest.class);       
-        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
-        new Logout().doGet(request,response);
-        assertEquals("Logout successfull", Resource.getFeedback());
-        assertEquals(User.getInstance().getUsername(), "guest");
+    	JsonObject user = new JsonObject();
+    	user.addProperty("name", "me");
+    	user.addProperty("priv", 2);
+        String inputString = new Gson().toJson(user);
+    	Entity<String> entity = Entity.entity(inputString, MediaType.APPLICATION_JSON);
+    	String jsonString = target("resource/logout").request().post(entity).readEntity(String.class);
+    	JsonObject logObj = new Gson().fromJson(jsonString, JsonObject.class);
+    	assertEquals(logObj.get("success").getAsBoolean(), true);
+    	assertEquals(logObj.get("feedback").getAsString(), "Logout successfully");
     }
     
     // test login fail
     @Test 
     public void testLoginFail() throws SQLException, ClassNotFoundException, ServletException, IOException {
-    	HttpServletRequest request = Mockito.mock(HttpServletRequest.class);       
-        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
-        ArrayList<String> userData = new ArrayList<>();
-        userData.add("1");	// id
-        userData.add("me");	// name
-        userData.add("1");	// privileges
-        Mockito.when(db.login("me", "secret")).thenReturn(userData);
-        Mockito.when(request.getParameter("name")).thenReturn("you");
-        Mockito.when(request.getParameter("password")).thenReturn("secret");
-        new Login(db).doPost(request,response);
-        assertEquals("Login failed", Resource.getFeedback());
-        assertEquals(User.getInstance().getUsername(), "guest");
+    	JsonObject user = new JsonObject();
+    	user.addProperty("name", "me");
+    	user.addProperty("password", "false");
+        String inputString = new Gson().toJson(user);
+    	Entity<String> entity = Entity.entity(inputString, MediaType.APPLICATION_JSON);
+    	String jsonString = target("resource/login").request().post(entity).readEntity(String.class);
+    	JsonObject logObj = new Gson().fromJson(jsonString, JsonObject.class);
+    	assertEquals(logObj.get("success").getAsBoolean(), false);
+    	assertEquals(logObj.get("feedback").getAsString(), "Login failed");
     }
     
     // test registration
     @Test
     public void testRegister() throws ClassNotFoundException, SQLException, ServletException, IOException{
-    	HttpServletRequest request = Mockito.mock(HttpServletRequest.class);       
-        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
-        Mockito.when(request.getParameter("name")).thenReturn("me");
-        Mockito.when(request.getParameter("password")).thenReturn("secret");
-        Mockito.when(db.register("me", "secret")).thenReturn(1);
-        new Register(db).doPost(request,response);
-        assertEquals("Registration successfull", Resource.getFeedback());
+    	JsonObject user = new JsonObject();
+    	user.addProperty("name", "new");
+    	user.addProperty("password", "secret");
+        String inputString = new Gson().toJson(user);
+    	Entity<String> entity = Entity.entity(inputString, MediaType.APPLICATION_JSON);
+    	String jsonString = target("resource/register").request().post(entity).readEntity(String.class);
+    	JsonObject logObj = new Gson().fromJson(jsonString, JsonObject.class);
+    	assertEquals(logObj.get("success").getAsBoolean(), true);
+    	assertEquals(logObj.get("feedback").getAsString(), "Registration successfully");
     }
     
- // test registration fail
+    // test registration fail
     @Test
     public void testRegisterFail() throws ClassNotFoundException, SQLException, ServletException, IOException{
-    	HttpServletRequest request = Mockito.mock(HttpServletRequest.class);       
-        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
-        Mockito.when(request.getParameter("name")).thenReturn("me");
-        Mockito.when(request.getParameter("password")).thenReturn("secret");
-        Mockito.when(db.register("me", "secret")).thenReturn(0);
-        new Register(db).doPost(request,response);
-        assertEquals("Registration failed", Resource.getFeedback());
+    	JsonObject user = new JsonObject();
+    	user.addProperty("name", "new");
+    	user.addProperty("password", "fail");
+        String inputString = new Gson().toJson(user);
+    	Entity<String> entity = Entity.entity(inputString, MediaType.APPLICATION_JSON);
+    	String jsonString = target("resource/register").request().post(entity).readEntity(String.class);
+    	JsonObject logObj = new Gson().fromJson(jsonString, JsonObject.class);
+    	assertEquals(logObj.get("success").getAsBoolean(), false);
+    	assertEquals(logObj.get("feedback").getAsString(), "Registration failed");
     }
-*/ 
+
 }

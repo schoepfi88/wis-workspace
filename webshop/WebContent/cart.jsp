@@ -35,7 +35,7 @@
 							<div class="panel-body">
 								{{item.description}} <span class="price"> {{item.price}}
 									$ <select id="counter{{$index}}"
-									class="selectpicker count-picker" data-width="auto">
+									class="selectpicker count-picker" data-width="fit">
 										<option ng-repeat="num in numbers track by $index">{{num}}</option>
 								</select>
 									<div ng-show="current_user().priv < 7"

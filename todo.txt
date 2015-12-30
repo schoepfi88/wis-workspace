@@ -10,7 +10,7 @@
 -compile source files with maven (für abgabe) B
 +category already exists in db should return "creation not possible" C
 +db path relativ -> also tests must run C
--test register, login, logout (weil jetzt alles über angular)
++test register, login, logout (weil jetzt alles über angular)
 	+REST test C
 	-Client test B
 +server side tests ob session_id und username existieren C
@@ -18,6 +18,10 @@
 +angular umstellung für login, register C
 +add to cart button at categories (when items listed) C
 +logout -> destroy cookie C
-
++login with facebook
++extend api test
++repair number of items in cart
+~facebook share button with items (open: fill share dialog with content. possible?)
+-repair browser test
 info: user privilegien == 7 admin, < 7 alle anderen, 0 nicht eingeloggt
 	admin erstellen per hand! bal ist bereits admin

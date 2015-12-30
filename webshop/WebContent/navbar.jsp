@@ -8,6 +8,8 @@
 	<link href="css/webshop.css" rel="stylesheet"></link>
 	<link href="css/bootstrap-select.min.css" rel="stylesheet"></link>
 	<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.11.0/bootstrap-social.css' type='text/css'>
 	<script src="js/jquery-2.1.4.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/angular.js"></script>
@@ -18,7 +20,17 @@
 	<script type="text/javascript" src="js/control.js"></script>
 </head>
 <body ng-app="WebShop" ng-controller="LoginCtrl">
-	<nav class="navbar navbar-default" ng-init="checkLogin()">
+	<div id="fb-root"></div>
+<script>
+	(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/de_DE/sdk.js#xfbml=1&version=v2.5&appId=1507326402896938";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+</script>
+	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<!-- mobile use -->
 			<div class="navbar-header">

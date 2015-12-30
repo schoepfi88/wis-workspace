@@ -119,7 +119,7 @@ public class Sqlite {
 					.getConnection(dbPath);
 			c.setAutoCommit(false);
 			System.out.println("Opened database successfully");
-
+			
 			Statement stmt = c.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM item;");
 			while (rs.next()) {
@@ -194,7 +194,6 @@ public class Sqlite {
 		if (rowsAffected > 0) {
 			System.out.println("Operation done successfully");
 		}
-		System.out.println("ROWS AFFECTED:" + rowsAffected);
 		return rowsAffected;
 	}
 	
@@ -214,7 +213,6 @@ public class Sqlite {
 				pst.close();
 				rs.close();
 				c.close();
-				System.out.println(" false ret");
 				return false;
 			}
 			
@@ -243,7 +241,6 @@ public class Sqlite {
 			Connection c = DriverManager.getConnection(dbPath);
 			c.setAutoCommit(false);
 			System.out.println("Opened database successfully");
-			System.out.println(id);
 			PreparedStatement pstmt = c.prepareStatement("DELETE FROM category WHERE id like ?");
 			
 			pstmt.setInt(1, id);
@@ -260,7 +257,6 @@ public class Sqlite {
 		if (rowsAffected > 0) {
 			System.out.println("Operation done successfully");
 		}
-		System.out.println("ROWS AFFECTED:" + rowsAffected);
 		return rowsAffected;
 	}
 	
@@ -320,7 +316,6 @@ public class Sqlite {
 		if (rowsAffected > 0) {
 			System.out.println("Operation done successfully");
 		}
-		System.out.println("ROWS AFFECTED:" + rowsAffected);
 		return rowsAffected;
 	}
 	
@@ -401,7 +396,6 @@ public class Sqlite {
 				.prepareStatement("Select * from user where user_name like ? and password like ?;");
 		pstmt.setString(1, name);
 		pstmt.setString(2, password);
-		// TODO save token in db
 		ResultSet rs = pstmt.executeQuery();
 		if (rs.next()) {
 			userData.add(Integer.toString(rs.getInt(1)));
@@ -416,9 +410,7 @@ public class Sqlite {
 		pstmt.setString(1, name);
 		pstmt.setString(2, token);
 		rs = pstmt.executeQuery();
-		System.out.println(rs.getRow());
 		if (!rs.next()){
-			System.out.println(rs.getRow());
 			pstmt1 = connection.prepareStatement("Insert into auth (session, user) values (?,?)");
 			pstmt1.setString(1, name);
 			pstmt1.setString(2, token);

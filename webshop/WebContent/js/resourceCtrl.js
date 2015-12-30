@@ -48,7 +48,26 @@ app.service('cartService', function($cookieStore){
 
 app.controller("ItemCtrl", function($scope, $http, $rootScope, loginService, cartService) {
 	$scope.baseUrl = "http://localhost:8080/webshop/api/resource/item/";
-	$http.get('http://localhost:8080/webshop/api/resource/item').
+	// login with facebook
+	var query = window.location.search.substring(1);
+    var code = query.split('=')[1];
+    if (code != undefined){
+    	$http.get('http://localhost:8080/webshop/api/resource/auth/'+code)
+    	.then(function success(response){
+    		$rootScope.feedback = response.data.feedback;
+			$rootScope.alert = true;
+			$rootScope.success = response.data.success;
+			if (response.data.success){
+				var tmpUser = {name: "", priv: "", session: ""};
+				tmpUser.name = response.data.name;
+				tmpUser.priv = response.data.priv;
+				loginService.set_user(tmpUser);
+			} else {
+				loginService.unset_user();
+			}
+    	});
+    }
+    $http.get('http://localhost:8080/webshop/api/resource/item').
 	success(function(data, status, headers, config) {
     	$scope.items = data;
     	$scope.oneSelected = false;
@@ -272,6 +291,13 @@ app.controller("LoginCtrl", function($scope, $http, loginService, $rootScope, $c
 		});
 	}
 	
+	$scope.facebookLogin = function(){
+		$http.get('http://localhost:8080/webshop/api/resource/facebook/login')
+		.then(function success(response){
+			location.href=response.data.url;
+		});
+	}
+	
 	$scope.current_user = function() {
 		return loginService.current_user();
 	};
@@ -297,13 +323,5 @@ app.controller("LoginCtrl", function($scope, $http, loginService, $rootScope, $c
 		});
 	}
 	
-	$scope.checkLogin = function() {
-		var u = $scope.current_user();
-		$http.post("http://localhost:8080/webshop/api/resource/checkAuth", JSON.stringify($scope.current_user()))
-		.then(function success(response){
-			if (!response.data.success){
-				loginService.unset_user();
-			}
-		});
-	}
 });
+

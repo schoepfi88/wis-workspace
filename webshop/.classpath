@@ -62,6 +62,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="jars/rest-api-sdk-1.4.1-javadoc.jar"/>
 	<classpathentry kind="lib" path="jars/rest-api-sdk-1.4.1-sources.jar"/>
-	<classpathentry kind="lib" path="jars/rest-api-sdk-1.4.1.jar"/>
+	<classpathentry kind="lib" path="/home/csl/workspace/webshop/jars/rest-api-sdk-1.4.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

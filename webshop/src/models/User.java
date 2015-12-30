@@ -42,17 +42,12 @@ public class User {
 		return token;
 	}
 	
-	public String getPassword(){
-		return password;
-	}
-	
 	@Override
     public boolean equals(Object object){
         boolean sameSame = false;
 
         if (object != null && object instanceof User){
-        	return this.username.equals(((User) object).getUsername()) && this.privilege == ((User) object).getPrivilege() &&
-        			this.token.equals(((User) object).getToken());
+        	return this.username.equals(((User) object).getUsername()) && this.privilege == ((User) object).getPrivilege();
         }
 
         return sameSame;

@@ -36,6 +36,7 @@
 							{{item.title}}
 							<span class="author">
 								{{item.author}} - {{item.createdAt}}
+								<div class="fb-share-button" data-href="http://google.com" data-layout="button"></div>
 							</span>
 						</div>
 					</a>

@@ -19,6 +19,9 @@
 				<input class="form-control" ng-model="user.password" name="password" type="password"/>
 				<br/>
 				<input name="submit" class="btn btn-default" type="submit" ng-click="login(user)" value="Submit" />
+				<a class="btn btn-social-icon btn-facebook" ng-click="facebookLogin()">
+    				<span class="fa fa-facebook"></span>
+  				</a>
 				<div class="btn btn-default btn-right" onclick="location.href='register.jsp'">Register</div>
 			</form>
 			<div ng-show="alert">

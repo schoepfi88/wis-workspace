@@ -6,6 +6,6 @@ public class DatabasePath {
 	private String relPath = "jdbc:sqlite:shop.db";//worked noch nicht bei mir
 
 	public String getPath(){
-		return balthiPath;
+		return chriPath;
 	}
 }

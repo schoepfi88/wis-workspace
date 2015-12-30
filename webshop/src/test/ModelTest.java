@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import models.ActiveUser;
 import models.Category;
 import models.Comment;
 import models.Item;
@@ -16,6 +17,7 @@ public class ModelTest {
 	Category c;
 	User u;
 	Comment com;
+	ActiveUser activeUser;
 	
 	@Before
 	public void init(){
@@ -23,6 +25,7 @@ public class ModelTest {
 		c = new Category();
 		u = new User();
 		com = new Comment();
+		activeUser = ActiveUser.getInstance();
 	}
 
 	@Test
@@ -78,10 +81,24 @@ public class ModelTest {
 		assertEquals("testuser", u.getUsername());
 		assertEquals(2, u.getId());
 		assertEquals(3, u.getPrivilege());
+		assertEquals("token", u.getToken());
 		u.unsetUser();
 		assertEquals("guest", u.getUsername());
 		assertEquals(0, u.getId());
 		assertEquals(1, u.getPrivilege());
+	}
+	
+	@Test
+	public void testActiveUser(){
+		assertEquals(activeUser.getUsers().size(), 0);
+		activeUser.addUser(new User());
+		assertEquals(activeUser.getUsers().size(), 1);
+		assertTrue("logged in", activeUser.checkLoggedIn(new User()));
+		activeUser.deleteUser(new User());
+		assertEquals(activeUser.getUsers().size(), 0);
+		
+
+
 	}
 
 }
