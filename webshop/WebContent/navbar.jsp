@@ -21,15 +21,18 @@
 </head>
 <body ng-app="WebShop" ng-controller="LoginCtrl">
 	<div id="fb-root"></div>
-<script>
-	(function(d, s, id) {
-	  var js, fjs = d.getElementsByTagName(s)[0];
-	  if (d.getElementById(id)) return;
-	  js = d.createElement(s); js.id = id;
-	  js.src = "//connect.facebook.net/de_DE/sdk.js#xfbml=1&version=v2.5&appId=1507326402896938";
-	  fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));
-</script>
+	<script>
+	window.fbAsyncInit = function() {
+		FB.init({appId: '1507326402896938', status: true, cookie: true,
+		xfbml: true});
+	};
+	(function() {
+		var e = document.createElement('script'); e.async = true;
+		e.src = document.location.protocol +
+		'//connect.facebook.net/en_US/all.js';
+		document.getElementById('fb-root').appendChild(e);
+	}());
+	</script>
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<!-- mobile use -->

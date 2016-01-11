@@ -2,6 +2,23 @@
 	contentType="text/html; charset=US-ASCII" pageEncoding="US-ASCII"%>
 
 <!DOCTYPE html>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+function share(item, id){
+	$('#share_button').click(function(e){
+		e.preventDefault();
+		FB.ui(
+		{
+			method: 'feed',
+			name: 'Share Item ' + item,
+			link: 'http://scheudler.herokuapp.com/',
+			caption: 'Top 3 reasons why you should care about your finance',
+			description: "http://localhost:8080/webshop/item/" + id,
+			message: ""
+		});
+	});
+};
+</script>
 <html>
 	<head>
 		<title>Webshop</title>
@@ -36,8 +53,8 @@
 							{{item.title}}
 							<span class="author">
 								{{item.author}} - {{item.createdAt}}
-								<div class="fb-share-button" data-href="http://google.com" data-layout="button"></div>
 							</span>
+							<div id="share_button" class="fb-share-button" onclick="share(item.name,item.id)" data-layout="button"></div>
 						</div>
 					</a>
 					<div class="panel-body">
