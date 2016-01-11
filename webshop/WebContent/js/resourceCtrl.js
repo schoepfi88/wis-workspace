@@ -67,6 +67,10 @@ app.controller("ItemCtrl", function($scope, $http, $rootScope, loginService, car
 			}
     	});
     }
+    
+
+
+    
     $http.get('http://localhost:8080/webshop/api/resource/item').
 	success(function(data, status, headers, config) {
     	$scope.items = data;
@@ -290,6 +294,20 @@ app.controller("LoginCtrl", function($scope, $http, loginService, $rootScope, $c
 			}
 		});
 	}
+	
+	
+	$scope.addresseObj = null;
+	$scope.getAddress = function(){
+		$http.get("http://localhost:8080/webshop/api/resource/profil").then(
+				function success(response) {
+					console.log("im in ctrl");
+					console.log(response.data.address);
+					$scope.adressObj = response.data.address;
+					
+				});
+	}
+	
+	
 	
 	$scope.facebookLogin = function(){
 		$http.get('http://localhost:8080/webshop/api/resource/facebook/login')

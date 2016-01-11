@@ -318,6 +318,22 @@ public class Resource {
 		response.entity(json.toString());
 		return response.build();
 	}
+	@GET
+	@Path("/profil")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAdress(@CookieParam(value = "user") String user) throws ClassNotFoundException, SQLException{
+		if (user != null)
+			user = user.split("%22")[1];
+		ResponseBuilder response = null;
+		response = Response.status(200);
+		String address = db.getAdress(user);
+		JsonObject json = new JsonObject();
+		json.addProperty("address", address);
+		
+		response.entity(json.toString());
+		return response.build();
+		
+	}
 	
 	@GET
 	@Path("/auth/{code}")
