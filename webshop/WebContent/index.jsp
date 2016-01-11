@@ -11,7 +11,7 @@ function share(item, id){
 		{
 			method: 'feed',
 			name: 'Share Item ' + item,
-			link: 'http://scheudler.herokuapp.com/',
+			link: 'http://localhost:8080/webshop',
 			caption: 'Top 3 reasons why you should care about your finance',
 			description: "http://localhost:8080/webshop/item/" + id,
 			message: ""
@@ -53,8 +53,8 @@ function share(item, id){
 							{{item.title}}
 							<span class="author">
 								{{item.author}} - {{item.createdAt}}
+								<div id="share_button" class="fb-share-button" onclick="share(item.name,item.id)" data-layout="button"></div>
 							</span>
-							<div id="share_button" class="fb-share-button" onclick="share(item.name,item.id)" data-layout="button"></div>
 						</div>
 					</a>
 					<div class="panel-body">
