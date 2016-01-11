@@ -26,14 +26,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.stream.JsonReader;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
-import db.Sqlite;
+
 import models.Category;
 import models.Comment;
 import models.Item;
 import models.User;
 import resources.Resource;
+import db.Sqlite;
 
 
 public class ServerAPI extends JerseyTest {

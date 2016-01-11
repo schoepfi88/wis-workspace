@@ -481,4 +481,27 @@ public class Sqlite {
 		return false;
 	}
 	
+	public String getAdress(String name) throws SQLException, ClassNotFoundException {
+		System.out.println("4545 "+name);
+		Class.forName("org.sqlite.JDBC");
+
+		Connection connection = DriverManager.getConnection(dbPath);
+		
+		PreparedStatement pstmt = connection
+				.prepareStatement("Select * from user where user_name like ?");
+		pstmt.setString(1, name);
+		ResultSet rs = pstmt.executeQuery();
+		if (rs.next()){
+			String adress = rs.getString("adress");
+			rs.close();
+			pstmt.close();
+			
+		rs.close();
+		pstmt.close();
+		connection.close();
+		return adress;
+	}
+		return "didnt work";
+	
+}
 }
