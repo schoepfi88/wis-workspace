@@ -302,7 +302,7 @@ app.controller("LoginCtrl", function($scope, $http, loginService, $rootScope, $c
 				function success(response) {
 					console.log("im in ctrl");
 					console.log(response.data.address);
-					$scope.adressObj = response.data.address;
+					$scope.addresseObj = response.data.address;
 					
 				});
 	}
