@@ -10,10 +10,12 @@
 		<script src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/angular.js"></script>
 		<script type="text/javascript" src="js/angular-cookies.min.js"></script>
-		<script type="text/javascript" src="js/resourceCtrl.js"></script>
+		<script type="text/javascript" src="js/angular-ctrl.js"></script>
 		<script type="text/javascript" src="js/bootstrap-select.min.js"></script>
 		<script type="text/javascript" src="js/moment.min.js"></script>
 		<script type="text/javascript" src="js/control.js"></script>
+		<script type="text/javascript" src="js/websocket.js"></script>
+		
 		<title>Person Manger</title>
 	</head>
 	<body>
@@ -25,18 +27,26 @@
 			</div>
 			<div class="col-xs-10 col-md-10 col-sm-10 col-lg-10">
 				<div class="jumbotron">
-					<p> TODO messages </p>
+				<div class="row">
+					<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+					</div>
+					<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+						<div id="allMessages">
+						</div>
+					
+						<form id="message_form" class="form-group">
+						<label for="firstname">Send Message:</label>
+						<input id="message_sender" class="form-control" name="sender" type="text" placeholder="sender"/>
+						<br>
+						<input id="message_text" class="form-control" type="text" name="text" placeholder="text"/>
+						<br/>
+						<input class="btn btn-default" type="submit" value="Submit" onclick="postMessage()"/>
+						</form>
+					</div>
 				</div>
-				<form class="form-group">
-				<label for="firstname">Send Message:</label>
-				<input class="form-control" name="sender" ng-model="message.sender" placeholder="sender"/>
-				<br>
-				<input class="form-control" name="text" ng-model="message.text" placeholder="text"/>
-				<br/>
-				</form>
-				
 				
 			</div>
 		</div>
+	</div>
 	</body>
 </html>
