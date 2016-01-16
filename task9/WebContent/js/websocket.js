@@ -14,13 +14,10 @@ function addMessage(sender, text) {
         sender: sender,
         text: text
     };
-    console.log("add device js");
     socket.send(JSON.stringify(addMessageAction));
 }
 
 function displayMessages(message) {
-	console.log(message);
-	
 	$("#allMessages").append(getPanelHtmlString(message.sender, message.text));
 }
 
