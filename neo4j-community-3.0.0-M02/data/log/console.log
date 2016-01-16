@@ -1,0 +1,189 @@
+2016-01-14 21:58:43.667+0100 INFO  No SSL certificate found, generating a self-signed certificate..
+2016-01-14 21:58:48.715+0100 INFO  Successfully started database
+2016-01-14 21:58:48.752+0100 INFO  Starting HTTP on port 7474 (4 threads available)
+2016-01-14 21:58:48.922+0100 INFO  Enabling HTTPS on port 7473
+2016-01-14 21:58:49.009+0100 INFO  Mounting static content at /webadmin
+2016-01-14 21:58:49.067+0100 INFO  Mounting static content at /browser
+2016-01-14 21:58:50.242+0100 INFO  Remote interface ready and available at http://localhost:7474/
+2016-01-14 21:59:00.461+0100 WARN  Failed authentication attempt for 'neo4j' from 127.0.0.1
+2016-01-14 21:59:00.475+0100 WARN  Failed authentication attempt for 'neo4j' from 127.0.0.1
+2016-01-14 22:04:05.499+0100 INFO  Neo4j Server shutdown initiated by request
+2016-01-14 22:04:05.582+0100 INFO  Successfully stopped database
+2016-01-14 22:04:05.582+0100 INFO  Successfully shutdown database
+2016-01-14 22:04:22.372+0100 INFO  Successfully started database
+2016-01-14 22:04:22.428+0100 INFO  Starting HTTP on port 7474 (4 threads available)
+2016-01-14 22:04:22.678+0100 INFO  Enabling HTTPS on port 7473
+2016-01-14 22:04:22.782+0100 INFO  Mounting static content at /webadmin
+2016-01-14 22:04:22.875+0100 INFO  Mounting static content at /browser
+2016-01-14 22:04:24.333+0100 INFO  Remote interface ready and available at http://localhost:7474/
+2016-01-14 22:07:33.658+0100 INFO  Neo4j Server shutdown initiated by request
+2016-01-14 22:07:33.778+0100 INFO  Successfully stopped database
+2016-01-14 22:07:33.778+0100 INFO  Successfully shutdown database
+2016-01-14 22:09:05.575+0100 INFO  Successfully started database
+2016-01-14 22:09:05.609+0100 INFO  Starting HTTP on port 7474 (4 threads available)
+2016-01-14 22:09:05.831+0100 INFO  Enabling HTTPS on port 7473
+2016-01-14 22:09:05.939+0100 INFO  Mounting static content at /webadmin
+2016-01-14 22:09:06.000+0100 INFO  Mounting static content at /browser
+2016-01-14 22:09:07.164+0100 INFO  Remote interface ready and available at http://localhost:7474/
+2016-01-14 22:11:55.155+0100 INFO  Neo4j Server shutdown initiated by request
+2016-01-14 22:11:55.246+0100 INFO  Successfully stopped database
+2016-01-14 22:11:55.246+0100 INFO  Successfully shutdown database
+2016-01-14 22:16:13.638+0100 INFO  Successfully started database
+2016-01-14 22:16:13.671+0100 INFO  Starting HTTP on port 7474 (4 threads available)
+2016-01-14 22:16:13.887+0100 INFO  Enabling HTTPS on port 7473
+2016-01-14 22:16:13.986+0100 INFO  Mounting static content at /webadmin
+2016-01-14 22:16:14.072+0100 INFO  Mounting static content at /browser
+2016-01-14 22:16:15.225+0100 INFO  Remote interface ready and available at http://localhost:7474/
+2016-01-14 22:21:21.705+0100 INFO  Neo4j Server shutdown initiated by request
+2016-01-14 22:21:21.794+0100 INFO  Successfully stopped database
+2016-01-14 22:21:21.795+0100 INFO  Successfully shutdown database
+2016-01-14 22:21:54.744+0100 INFO  Successfully started database
+2016-01-14 22:21:54.781+0100 INFO  Starting HTTP on port 7474 (4 threads available)
+2016-01-14 22:21:54.972+0100 INFO  Enabling HTTPS on port 7473
+2016-01-14 22:21:55.060+0100 INFO  Mounting static content at /webadmin
+2016-01-14 22:21:55.128+0100 INFO  Mounting static content at /browser
+2016-01-14 22:21:56.545+0100 INFO  Remote interface ready and available at http://localhost:7474/
+2016-01-14 22:25:03.369+0100 INFO  Neo4j Server shutdown initiated by request
+Exception in thread "Thread-11" java.lang.RuntimeException: org.neo4j.kernel.lifecycle.LifecycleException: Failed to transition component 'org.neo4j.kernel.impl.storageengine.impl.recordstorage.RecordStorageEngine@28c6deb6' from STOPPED to SHUTTING_DOWN. Please see attached cause exception
+	at org.neo4j.helpers.RunCarefully.run(RunCarefully.java:57)
+	at org.neo4j.server.AbstractNeoServer.stop(AbstractNeoServer.java:468)
+	at org.neo4j.server.Bootstrapper$1.run(Bootstrapper.java:181)
+Caused by: org.neo4j.kernel.lifecycle.LifecycleException: Failed to transition component 'org.neo4j.kernel.impl.storageengine.impl.recordstorage.RecordStorageEngine@28c6deb6' from STOPPED to SHUTTING_DOWN. Please see attached cause exception
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.shutdown(LifeSupport.java:501)
+	at org.neo4j.kernel.lifecycle.LifeSupport.shutdown(LifeSupport.java:201)
+	at org.neo4j.kernel.NeoStoreDataSource.stop(NeoStoreDataSource.java:927)
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.stop(LifeSupport.java:462)
+	at org.neo4j.kernel.lifecycle.LifeSupport.stopInstances(LifeSupport.java:163)
+	at org.neo4j.kernel.lifecycle.LifeSupport.stop(LifeSupport.java:145)
+	at org.neo4j.kernel.impl.transaction.state.DataSourceManager.stop(DataSourceManager.java:119)
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.stop(LifeSupport.java:462)
+	at org.neo4j.kernel.lifecycle.LifeSupport.stopInstances(LifeSupport.java:163)
+	at org.neo4j.kernel.lifecycle.LifeSupport.stop(LifeSupport.java:145)
+	at org.neo4j.kernel.lifecycle.LifeSupport.shutdown(LifeSupport.java:186)
+	at org.neo4j.kernel.impl.factory.GraphDatabaseFacade.shutdown(GraphDatabaseFacade.java:285)
+	at org.neo4j.server.database.LifecycleManagingDatabase.stop(LifecycleManagingDatabase.java:111)
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.stop(LifeSupport.java:462)
+	at org.neo4j.kernel.lifecycle.LifeSupport.stopInstances(LifeSupport.java:163)
+	at org.neo4j.kernel.lifecycle.LifeSupport.stop(LifeSupport.java:145)
+	at org.neo4j.server.AbstractNeoServer$$Lambda$98/391497311.run(Unknown Source)
+	at org.neo4j.helpers.RunCarefully.run(RunCarefully.java:47)
+	... 2 more
+	Suppressed: org.neo4j.kernel.lifecycle.LifecycleException: Failed to transition component 'org.neo4j.kernel.impl.pagecache.PageCacheLifecycle@14101a07' from STOPPED to SHUTTING_DOWN. Please see attached cause exception
+		at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.shutdown(LifeSupport.java:501)
+		at org.neo4j.kernel.lifecycle.LifeSupport.shutdown(LifeSupport.java:201)
+		... 9 more
+	Caused by: java.lang.IllegalStateException: Cannot close the PageCache while files are still mapped:
+	neostore (1 mapping)
+	neostore.counts.db.b (1 mapping)
+	neostore.relationshipgroupstore.db (1 mapping)
+	neostore.schemastore.db (1 mapping)
+	neostore.labeltokenstore.db (1 mapping)
+	neostore.labeltokenstore.db.names (1 mapping)
+	neostore.relationshiptypestore.db (1 mapping)
+	neostore.relationshiptypestore.db.names (1 mapping)
+	neostore.relationshipstore.db (1 mapping)
+	neostore.propertystore.db (1 mapping)
+	neostore.propertystore.db.arrays (1 mapping)
+	neostore.propertystore.db.strings (1 mapping)
+	neostore.propertystore.db.index (1 mapping)
+	neostore.propertystore.db.index.keys (1 mapping)
+	neostore.nodestore.db (1 mapping)
+	neostore.nodestore.db.labels (1 mapping)
+		at org.neo4j.io.pagecache.impl.muninn.MuninnPageCache.close(MuninnPageCache.java:521)
+		at org.neo4j.kernel.impl.pagecache.PageCacheLifecycle.shutdown(PageCacheLifecycle.java:42)
+		at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.shutdown(LifeSupport.java:493)
+		... 10 more
+Caused by: java.nio.file.NoSuchFileException: /home/csl/workspace/neo4j-community-3.0.0-M02/data/graph.db/schema/label/lucene
+	at sun.nio.fs.UnixException.translateToIOException(UnixException.java:86)
+	at sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:102)
+	at sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:107)
+	at sun.nio.fs.UnixPath.toRealPath(UnixPath.java:837)
+	at org.apache.lucene.util.IOUtils.spins(IOUtils.java:465)
+	at org.apache.lucene.util.IOUtils.spins(IOUtils.java:448)
+	at org.apache.lucene.index.ConcurrentMergeScheduler.initDynamicDefaults(ConcurrentMergeScheduler.java:376)
+	at org.apache.lucene.index.ConcurrentMergeScheduler.merge(ConcurrentMergeScheduler.java:464)
+	at org.apache.lucene.index.IndexWriter.waitForMerges(IndexWriter.java:2288)
+	at org.apache.lucene.index.IndexWriter.shutdown(IndexWriter.java:1079)
+	at org.apache.lucene.index.IndexWriter.close(IndexWriter.java:1123)
+	at org.neo4j.kernel.api.impl.index.LuceneIndexWriter.close(LuceneIndexWriter.java:147)
+	at org.neo4j.kernel.api.impl.index.LuceneLabelScanStore.shutdown(LuceneLabelScanStore.java:306)
+	at org.neo4j.kernel.impl.storageengine.impl.recordstorage.RecordStorageEngine.shutdown(RecordStorageEngine.java:496)
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.shutdown(LifeSupport.java:493)
+	... 19 more
+2016-01-14 22:28:08.287+0100 ERROR Failed to start Neo4j: Starting Neo4j failed: Component 'org.neo4j.server.database.LifecycleManagingDatabase@50f7a153' was successfully initialized, but failed to start. Please see attached cause exception. Starting Neo4j failed: Component 'org.neo4j.server.database.LifecycleManagingDatabase@50f7a153' was successfully initialized, but failed to start. Please see attached cause exception.
+org.neo4j.server.ServerStartupException: Starting Neo4j failed: Component 'org.neo4j.server.database.LifecycleManagingDatabase@50f7a153' was successfully initialized, but failed to start. Please see attached cause exception.
+	at org.neo4j.server.exception.ServerStartupErrors.translateToServerStartupError(ServerStartupErrors.java:68)
+	at org.neo4j.server.AbstractNeoServer.start(AbstractNeoServer.java:215)
+	at org.neo4j.server.Bootstrapper.start(Bootstrapper.java:97)
+	at org.neo4j.server.CommunityBootstrapper.start(CommunityBootstrapper.java:48)
+	at org.neo4j.server.CommunityBootstrapper.main(CommunityBootstrapper.java:35)
+Caused by: org.neo4j.kernel.lifecycle.LifecycleException: Component 'org.neo4j.server.database.LifecycleManagingDatabase@50f7a153' was successfully initialized, but failed to start. Please see attached cause exception.
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.start(LifeSupport.java:448)
+	at org.neo4j.kernel.lifecycle.LifeSupport.start(LifeSupport.java:109)
+	at org.neo4j.server.AbstractNeoServer.start(AbstractNeoServer.java:187)
+	... 3 more
+Caused by: java.lang.RuntimeException: Error starting org.neo4j.kernel.impl.factory.CommunityFacadeFactory, /home/csl/workspace/neo4j-community-3.0.0-M02/data/graph.db
+	at org.neo4j.kernel.impl.factory.GraphDatabaseFacadeFactory.newFacade(GraphDatabaseFacadeFactory.java:143)
+	at org.neo4j.kernel.impl.factory.CommunityFacadeFactory.newFacade(CommunityFacadeFactory.java:43)
+	at org.neo4j.kernel.impl.factory.GraphDatabaseFacadeFactory.newFacade(GraphDatabaseFacadeFactory.java:108)
+	at org.neo4j.server.CommunityNeoServer$1.newGraphDatabase(CommunityNeoServer.java:65)
+	at org.neo4j.server.database.LifecycleManagingDatabase.start(LifecycleManagingDatabase.java:95)
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.start(LifeSupport.java:438)
+	... 5 more
+Caused by: org.neo4j.kernel.lifecycle.LifecycleException: Component 'org.neo4j.kernel.StoreLockerLifecycleAdapter@7d9d8766' was successfully initialized, but failed to start. Please see attached cause exception.
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.start(LifeSupport.java:448)
+	at org.neo4j.kernel.lifecycle.LifeSupport.start(LifeSupport.java:109)
+	at org.neo4j.kernel.impl.factory.GraphDatabaseFacadeFactory.newFacade(GraphDatabaseFacadeFactory.java:139)
+	... 10 more
+Caused by: org.neo4j.kernel.StoreLockException: Store and its lock file has been locked by another process: data/graph.db/store_lock. Please ensure no other process is using this database, and that the directory is writable (required even for read-only access)
+	at org.neo4j.kernel.StoreLocker.storeLockException(StoreLocker.java:93)
+	at org.neo4j.kernel.StoreLocker.checkLock(StoreLocker.java:79)
+	at org.neo4j.kernel.StoreLockerLifecycleAdapter.start(StoreLockerLifecycleAdapter.java:44)
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.start(LifeSupport.java:438)
+	... 12 more
+2016-01-14 22:29:14.369+0100 ERROR Failed to start Neo4j: Starting Neo4j failed: Component 'org.neo4j.server.database.LifecycleManagingDatabase@50f7a153' was successfully initialized, but failed to start. Please see attached cause exception. Starting Neo4j failed: Component 'org.neo4j.server.database.LifecycleManagingDatabase@50f7a153' was successfully initialized, but failed to start. Please see attached cause exception.
+org.neo4j.server.ServerStartupException: Starting Neo4j failed: Component 'org.neo4j.server.database.LifecycleManagingDatabase@50f7a153' was successfully initialized, but failed to start. Please see attached cause exception.
+	at org.neo4j.server.exception.ServerStartupErrors.translateToServerStartupError(ServerStartupErrors.java:68)
+	at org.neo4j.server.AbstractNeoServer.start(AbstractNeoServer.java:215)
+	at org.neo4j.server.Bootstrapper.start(Bootstrapper.java:97)
+	at org.neo4j.server.CommunityBootstrapper.start(CommunityBootstrapper.java:48)
+	at org.neo4j.server.CommunityBootstrapper.main(CommunityBootstrapper.java:35)
+Caused by: org.neo4j.kernel.lifecycle.LifecycleException: Component 'org.neo4j.server.database.LifecycleManagingDatabase@50f7a153' was successfully initialized, but failed to start. Please see attached cause exception.
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.start(LifeSupport.java:448)
+	at org.neo4j.kernel.lifecycle.LifeSupport.start(LifeSupport.java:109)
+	at org.neo4j.server.AbstractNeoServer.start(AbstractNeoServer.java:187)
+	... 3 more
+Caused by: java.lang.RuntimeException: Error starting org.neo4j.kernel.impl.factory.CommunityFacadeFactory, /home/csl/workspace/neo4j-community-3.0.0-M02/data/graph.db
+	at org.neo4j.kernel.impl.factory.GraphDatabaseFacadeFactory.newFacade(GraphDatabaseFacadeFactory.java:143)
+	at org.neo4j.kernel.impl.factory.CommunityFacadeFactory.newFacade(CommunityFacadeFactory.java:43)
+	at org.neo4j.kernel.impl.factory.GraphDatabaseFacadeFactory.newFacade(GraphDatabaseFacadeFactory.java:108)
+	at org.neo4j.server.CommunityNeoServer$1.newGraphDatabase(CommunityNeoServer.java:65)
+	at org.neo4j.server.database.LifecycleManagingDatabase.start(LifecycleManagingDatabase.java:95)
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.start(LifeSupport.java:438)
+	... 5 more
+Caused by: org.neo4j.kernel.lifecycle.LifecycleException: Component 'org.neo4j.kernel.StoreLockerLifecycleAdapter@7d9d8766' was successfully initialized, but failed to start. Please see attached cause exception.
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.start(LifeSupport.java:448)
+	at org.neo4j.kernel.lifecycle.LifeSupport.start(LifeSupport.java:109)
+	at org.neo4j.kernel.impl.factory.GraphDatabaseFacadeFactory.newFacade(GraphDatabaseFacadeFactory.java:139)
+	... 10 more
+Caused by: org.neo4j.kernel.StoreLockException: Store and its lock file has been locked by another process: data/graph.db/store_lock. Please ensure no other process is using this database, and that the directory is writable (required even for read-only access)
+	at org.neo4j.kernel.StoreLocker.storeLockException(StoreLocker.java:93)
+	at org.neo4j.kernel.StoreLocker.checkLock(StoreLocker.java:79)
+	at org.neo4j.kernel.StoreLockerLifecycleAdapter.start(StoreLockerLifecycleAdapter.java:44)
+	at org.neo4j.kernel.lifecycle.LifeSupport$LifecycleInstance.start(LifeSupport.java:438)
+	... 12 more
+2016-01-14 22:31:33.635+0100 INFO  Successfully started database
+2016-01-14 22:31:33.664+0100 INFO  Starting HTTP on port 7474 (4 threads available)
+2016-01-14 22:31:33.851+0100 INFO  Enabling HTTPS on port 7473
+2016-01-14 22:31:33.963+0100 INFO  Mounting static content at /webadmin
+2016-01-14 22:31:34.031+0100 INFO  Mounting static content at /browser
+2016-01-14 22:31:35.376+0100 INFO  Remote interface ready and available at http://localhost:7474/
+2016-01-14 22:33:07.365+0100 INFO  Neo4j Server shutdown initiated by request
+2016-01-14 22:33:07.452+0100 INFO  Successfully stopped database
+2016-01-14 22:33:07.452+0100 INFO  Successfully shutdown database
+2016-01-14 22:34:08.179+0100 INFO  Successfully started database
+2016-01-14 22:34:08.217+0100 INFO  Starting HTTP on port 7474 (4 threads available)
+2016-01-14 22:34:08.438+0100 INFO  Enabling HTTPS on port 7473
+2016-01-14 22:34:08.547+0100 INFO  Mounting static content at /webadmin
+2016-01-14 22:34:08.629+0100 INFO  Mounting static content at /browser
+2016-01-14 22:34:09.732+0100 INFO  Remote interface ready and available at http://localhost:7474/
