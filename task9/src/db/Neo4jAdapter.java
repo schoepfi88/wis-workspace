@@ -18,7 +18,8 @@ import relationships.EmploymentRelationship;
 import relationships.Live;
 
 public class Neo4jAdapter {
-	private static String DB_PATH = "workspace/neo4j-community-3.0.0-M02/data/graph.db";
+	//private static String DB_PATH = "workspace/neo4j-community-3.0.0-M02/data/graph.db";
+	private static String DB_PATH = "/Users/balthazur/Programming/workspace/wis-workspace/neo4j-community-3.0.0-M02/data/graph.db";
 	GraphDatabaseService db;
 	private static Neo4jAdapter instance = null;
 	
