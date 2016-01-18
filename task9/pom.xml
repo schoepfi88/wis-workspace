@@ -226,11 +226,6 @@
 			<version>1.9.9</version>
 		</dependency>
 		<dependency>
-			<groupId>org.neo4j</groupId>
-			<artifactId>neo4j-kernel</artifactId>
-			<version>1.9.9</version>
-		</dependency>
-		<dependency>
 			<groupId>javax.enterprise</groupId>
 			<artifactId>cdi-api</artifactId>
 			<version>1.2</version>

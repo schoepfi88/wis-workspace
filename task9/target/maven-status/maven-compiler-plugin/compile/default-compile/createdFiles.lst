@@ -1,3 +1,14 @@
-db/GraphUtil.class
+models/User.class
+labels/Location.class
+websocket/MessageWebSocketServer.class
+resources/Resource.class
+relationships/EmploymentRelationship.class
+db/Neo4jAdapter.class
+labels/Work.class
+labels/Person.class
+relationships/Live.class
+websocket/MessageSessionHandler.class
 resources/Application.class
 db/GraphUtil$1.class
+models/Message.class
+db/GraphUtil.class

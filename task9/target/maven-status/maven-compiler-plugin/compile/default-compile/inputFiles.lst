@@ -1,7 +1,13 @@
-/home/csl/workspace/task9/src/db/GraphUtil.java
 /home/csl/workspace/task9/src/resources/Application.java
 /home/csl/workspace/task9/src/db/Neo4jAdapter.java
 /home/csl/workspace/task9/src/models/User.java
-/home/csl/workspace/task9/src/models/EmploymentRelationship.java
+/home/csl/workspace/task9/src/relationships/EmploymentRelationship.java
+/home/csl/workspace/task9/src/labels/Location.java
+/home/csl/workspace/task9/src/relationships/Live.java
+/home/csl/workspace/task9/src/websocket/MessageSessionHandler.java
+/home/csl/workspace/task9/src/labels/Work.java
+/home/csl/workspace/task9/src/db/GraphUtil.java
+/home/csl/workspace/task9/src/websocket/MessageWebSocketServer.java
 /home/csl/workspace/task9/src/resources/Resource.java
-/home/csl/workspace/task9/src/models/Live.java
+/home/csl/workspace/task9/src/labels/Person.java
+/home/csl/workspace/task9/src/models/Message.java
