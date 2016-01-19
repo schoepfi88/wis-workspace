@@ -16,6 +16,7 @@ app.controller("UserCtrl", function($scope, $http, $rootScope) {
 	$http.post($scope.baseUrl + "person", JSON.stringify(user))
 		.then(function success(response) {
 			console.log(response.data);
+			window.location = "http://localhost:8080/task9/createPerson.html";
 		});
 	};
 });

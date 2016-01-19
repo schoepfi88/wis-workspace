@@ -187,3 +187,30 @@ Caused by: org.neo4j.kernel.StoreLockException: Store and its lock file has been
 2016-01-14 22:34:08.547+0100 INFO  Mounting static content at /webadmin
 2016-01-14 22:34:08.629+0100 INFO  Mounting static content at /browser
 2016-01-14 22:34:09.732+0100 INFO  Remote interface ready and available at http://localhost:7474/
+2016-01-19 13:28:56.494+0100 INFO  Successfully started database
+2016-01-19 13:28:56.627+0100 INFO  Starting HTTP on port 7474 (4 threads available)
+2016-01-19 13:28:57.309+0100 INFO  Enabling HTTPS on port 7473
+2016-01-19 13:28:57.489+0100 INFO  Mounting static content at /webadmin
+2016-01-19 13:28:57.595+0100 INFO  Mounting static content at /browser
+2016-01-19 13:29:00.742+0100 INFO  Remote interface ready and available at http://localhost:7474/
+2016-01-19 13:29:27.703+0100 INFO  Neo4j Server shutdown initiated by request
+2016-01-19 13:29:27.791+0100 INFO  Successfully stopped database
+2016-01-19 13:29:27.792+0100 INFO  Successfully shutdown database
+2016-01-19 13:33:49.141+0100 INFO  Successfully started database
+2016-01-19 13:33:49.218+0100 INFO  Starting HTTP on port 7474 (4 threads available)
+2016-01-19 13:33:49.613+0100 INFO  Enabling HTTPS on port 7473
+2016-01-19 13:33:49.837+0100 INFO  Mounting static content at /webadmin
+2016-01-19 13:33:49.964+0100 INFO  Mounting static content at /browser
+2016-01-19 13:33:51.635+0100 INFO  Remote interface ready and available at http://localhost:7474/
+2016-01-19 13:34:25.796+0100 INFO  Neo4j Server shutdown initiated by request
+2016-01-19 13:34:25.885+0100 INFO  Successfully stopped database
+2016-01-19 13:34:25.885+0100 INFO  Successfully shutdown database
+2016-01-19 13:36:50.942+0100 INFO  Successfully started database
+2016-01-19 13:36:50.967+0100 INFO  Starting HTTP on port 7474 (4 threads available)
+2016-01-19 13:36:51.120+0100 INFO  Enabling HTTPS on port 7473
+2016-01-19 13:36:51.196+0100 INFO  Mounting static content at /webadmin
+2016-01-19 13:36:51.254+0100 INFO  Mounting static content at /browser
+2016-01-19 13:36:52.579+0100 INFO  Remote interface ready and available at http://localhost:7474/
+2016-01-19 13:39:07.842+0100 INFO  Neo4j Server shutdown initiated by request
+2016-01-19 13:39:07.939+0100 INFO  Successfully stopped database
+2016-01-19 13:39:07.939+0100 INFO  Successfully shutdown database
