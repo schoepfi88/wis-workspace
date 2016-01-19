@@ -1,5 +1,8 @@
 package resources;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -12,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import db.Neo4jAdapter;
+
 import models.User;
 
 @Path("/api")
@@ -34,6 +38,22 @@ public class Resource {
 		return response.build();
 	
 	}
+	
+	@GET
+	@Path("/addresses")
+	@Produces({MediaType.APPLICATION_JSON })
+	public String[] getAddresses() throws ClassNotFoundException {
+		ResponseBuilder response = Response.status(200);
+		System.out.println("im in get 12343r245");
+		Neo4jAdapter neo = Neo4jAdapter.getInstance();
+		neo.open();
+		String[] res = neo.getAdresses();
+		neo.close();
+		return res;
+	}
+	
+	
+	
 
 	
 	}

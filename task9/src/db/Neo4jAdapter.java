@@ -2,11 +2,17 @@ package db;
 
 import static db.GraphUtil.registerShutdownHook;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 
@@ -73,6 +79,32 @@ public class Neo4jAdapter {
 		} finally {
 			tx.finish();
 		}
+	}
+	
+	public String[] getAdresses(){
+		ArrayList <String> res = new ArrayList<String>();
+		try ( Transaction ignored = db.beginTx();
+			      Result result = db.execute("MATCH (n) WHERE EXISTS(n.address) RETURN DISTINCT 'node' as element, n.address AS address LIMIT 25 UNION ALL MATCH ()-[r]-() WHERE EXISTS(r.address) RETURN DISTINCT 'relationship' AS element, r.address AS address LIMIT 25"))
+	
+			{
+			    while ( result.hasNext() )
+			    {
+			        Map<String,Object> row = result.next();
+			        for ( Entry<String,Object> column : row.entrySet() )
+			        {
+			             System.out.println(column.getKey() + ": " + column.getValue() + "; ");
+			             if(column.getKey().equals("address")){
+			            	 res.add(column.getValue().toString());
+			             }
+			        }
+			        
+			    }
+			}
+			
+				Object[] objArr = res.toArray();
+				String[] stringArray = Arrays.copyOf(objArr, objArr.length, String[].class);
+				return stringArray;
+				
 	}
 	
 	public void close(){
