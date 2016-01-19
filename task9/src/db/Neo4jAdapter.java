@@ -21,13 +21,12 @@ public class Neo4jAdapter {
 	//private static String DB_PATH = "workspace/neo4j-community-3.0.0-M02/data/graph.db";
 	private static String DB_PATH = "/Users/balthazur/Programming/workspace/wis-workspace/neo4j-community-3.0.0-M02/data/graph.db";
 	GraphDatabaseService db;
+	GraphDatabaseFactory dbFac;
 	private static Neo4jAdapter instance = null;
 	
 	@SuppressWarnings("deprecation")
 	private Neo4jAdapter(){
-		GraphDatabaseFactory dbFac = new GraphDatabaseFactory();
-		db = dbFac.newEmbeddedDatabase(DB_PATH);
-		registerShutdownHook(db);
+		dbFac = new GraphDatabaseFactory();
 	}
 	
 	public static Neo4jAdapter getInstance(){
@@ -79,6 +78,12 @@ public class Neo4jAdapter {
 	public void close(){
 		db.shutdown();
 	}
+	
+	public void open(){
+		db = dbFac.newEmbeddedDatabase(DB_PATH);
+		registerShutdownHook(db);
+	}
+	
 	
 	public static void main(String[] args) {
 		User c = new User(0, "Chri", "Schöpf", "male", 24, "Austria", "Student", "4444", "weg 4");

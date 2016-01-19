@@ -25,6 +25,7 @@ public class Resource {
 		ResponseBuilder response = Response.status(200);
 		User jsonUser = new Gson().fromJson(json, User.class);
 		Neo4jAdapter neo = Neo4jAdapter.getInstance();
+		neo.open();
 		neo.createPerson(jsonUser);
 		neo.close();
 		JsonObject jsonObj = new JsonObject();
