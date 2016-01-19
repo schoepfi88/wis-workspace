@@ -11,6 +11,8 @@ app.controller("UserCtrl", function($scope, $http, $rootScope) {
 	console.log($scope.baseUrl);
 	
 	$scope.reg = function(user){
+		window.alert(JSON.stringify(user));
+		console.log(JSON.stringify(user));
 	$http.post($scope.baseUrl + "person", JSON.stringify(user))
 		.then(function success(response) {
 			console.log(response.data);
