@@ -1,0 +1,90 @@
+<html>
+<head>
+<meta charset="UTF-8">
+	<head>
+		<script src="js/jquery-2.1.4.js"></script>
+		<link href="css/bootstrap.min.css" rel="stylesheet"></link>
+		<link href="css/custom.css" rel="stylesheet"></link>
+		<link href="css/bootstrap-select.min.css" rel="stylesheet"></link>
+		<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.11.0/bootstrap-social.css' type='text/css'>
+		<script src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/angular.js"></script>
+		<script type="text/javascript" src="js/angular-cookies.min.js"></script>
+		<script type="text/javascript" src="js/angular-ctrl.js"></script>
+		<script type="text/javascript" src="js/bootstrap-select.min.js"></script>
+		<script type="text/javascript" src="js/moment.min.js"></script>
+		<script type="text/javascript" src="js/navbar-import.js"></script>
+		<title>Finanz Manger</title>
+	</head>
+<body>
+<div id="menu"></div>
+
+<div class="row">
+		<div class="col-xs-2 col-md-2 col-sm-2 col-lg-2">
+		</div>
+		<!-- main content -->
+		<div class="col-xs-8 col-md-8 col-sm-8 col-lg-8" ng-app="Finanz">
+			<h1 id="overview" class="h1">Overview</h1>
+			<div class="jumbotron content-center max-height" ng-controller="OverviewCtrl">
+			asdfadf
+  			</div>
+  			
+  			<h1 id="accounts" class="h1">Accounts</h1>
+			<div class="jumbotron max-height" ng-controller="AccountCtrl">
+				<div class="panel panel-info" ng-repeat="acc in accounts">
+					<div class="panel-heading">
+						{{acc.name}} Type: {{acc.type}} Account Number: {{acc.number}}
+						<span class="btn-right" >
+						{{acc.balance}} €
+						</span>
+					</div>
+					<div class="panel-body">
+						transactions
+					</div>
+				</div>
+				<!-- Trigger the modal with a button -->
+				<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Create Account</button>
+
+				<!-- Modal -->
+				<div id="myModal" class="modal fade" role="dialog">
+				  <div class="modal-dialog">
+				    <!-- Modal content-->
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        <h4 class="modal-title">Create Account</h4>
+				      </div>
+				      <div class="modal-body">
+				      	<label for="name">Account Name</label>
+						<input id="name" class="form-control" ng-model="account.name"/>
+						<br>
+						<label for="number">Account Number</label>
+						<input id="number" class="form-control" ng-model="account.number"/>
+						<br>
+						<select id="accountCategory" class="selectpicker" title="Select Category ..." ng-model="account.type">
+						<option ng-repeat="type in account_tpyes">{{type}}</option>
+						</select>
+				      </div>
+				      <div class="modal-footer">
+				      	<div class="btn btn-primary" ng-click="createAccount(account)">Create Account</div>
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				      </div>
+				    </div>
+				
+				  </div>
+				</div>
+  			</div>
+  			
+  			<h1 id="transactions" class="h1">Transactions</h1>
+			<div class="jumbotron content-center max-height" ng-controller="TransactionCtrl">
+			asdfadf
+  			</div>
+  			
+  			<!-- dummy -->
+  			<h1 class"h1"></h1>
+		</div>
+	</div>
+</body>
+</html>
