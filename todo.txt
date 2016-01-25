@@ -1,27 +1,17 @@
-+save session id at server and check if user exists with this session id
-+load items of category (in category.jsp)
-+warenkorb C
-+admin benutzersystem
--search for item (optional) B
-+login ausblenden wenn eingeloggt, loggout ausblenden wenn ausgeloggt
-+alle feedbacks mit angular
-+fehlerbehandlung (feedback)
--input validieren (mit ng-show (cart.jsp) oder ng-valid) B
--compile source files with maven (für abgabe) B
-+category already exists in db should return "creation not possible" C
-+db path relativ -> also tests must run C
-+test register, login, logout (weil jetzt alles über angular)
-	+REST test C
-	-Client test B
-+server side tests ob session_id und username existieren C
-+paypal B
-+angular umstellung für login, register C
-+add to cart button at categories (when items listed) C
-+logout -> destroy cookie C
-+login with facebook
-+extend api test
-+repair number of items in cart
-~facebook share button with items (open: fill share dialog with content. possible?)
--repair browser test
-info: user privilegien == 7 admin, < 7 alle anderen, 0 nicht eingeloggt
-	admin erstellen per hand! bal ist bereits admin
+ANFORDERUNGEN
++ Die Applikation muss über ein Anmeldesystem verfügen.
+- Alle Transaktionen und alle Konten müssen persisiert werden. Verlässt ein Benutzer die Applikation und meldet sich später erneut an, so müssen alle Kontostände und alle Transaktionen mit
+- Export- bzw. Import-Funktionalität muss implementiert werden
++ Die Applikation ist als Single-Page-Webapplikation zu implementieren
++ Es ist eine strikte Trennung zwischen HTML, JS und CSS einzuhalten
+- Als JS-Framework kann wahlweise Webpack und/oder ReactJS verwendet werden
+- Die Web-Applikation muss alle gesetzlichen Anforderungen von Accessibility gerecht werden
+- Es ist auf eine geeignete Usability zu achten
+- Die umgesetzten Funktionalitäten sind ausreichend zu testen
+
+TODO
+- Transaktionen hinzufügen
+- Overview soll die salden aller konten darstellen
+- Logout und anzeige vom usernamen in navbar
+- Testen aller klassen
+...
