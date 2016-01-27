@@ -10,6 +10,23 @@
 	border-radius: 0;
 }
 
+.panel-primary > .panel-account-head {
+	border-color: #0B0B61;
+	background-color: #0B0B61;
+}
+
+.panel-primary > .panel-overview-head {
+	border-color: black;
+	background-color: black;
+	color: white;
+}
+
+.panel-account {
+	border-color: #0B0B61;
+	margin-left: 5%;
+	margin-right: 5%;
+}
+
 .navbar-brand {
 	color: orange !important;
 }
@@ -28,6 +45,7 @@
 	color: #0B0B61;
 	padding-top: 10%;
 	padding-bottom: 5%;
+	display: block;
 }
 
 .max-height {
@@ -54,6 +72,10 @@
 
 .content-center {
 	text-align: center;
+}
+
+.content-left {
+	text-align: left;
 }
 
 .disable-x-scroll {

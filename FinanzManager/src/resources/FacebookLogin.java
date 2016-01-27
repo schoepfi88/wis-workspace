@@ -35,6 +35,7 @@ public class FacebookLogin {
 			fbGraphUrl = "https://graph.facebook.com/oauth/access_token?" + "client_id=" + FacebookLogin.FB_APP_ID
 					+ "&redirect_uri=" + URLEncoder.encode(FacebookLogin.REDIRECT_URI, "UTF-8") + "&client_secret="
 					+ FB_APP_SECRET + "&code=" + code;
+			System.out.println(code);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -64,7 +65,6 @@ public class FacebookLogin {
 					b.append(inputLine + "\n");
 				in.close();
 			} catch (IOException e) {
-				e.printStackTrace();
 				System.out.println("connection failed");
 				return null;
 			}

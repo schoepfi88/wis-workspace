@@ -14,20 +14,8 @@ public class Account {
 	private String name;
 	private AccountType type;
 	private String number;
-	private int owner;
-	private ArrayList<Transaction> transactions;
-	
-	public Account(){
-		this.transactions = new ArrayList<>();
-	}
-	
-	public Account(int id, AccountType type, String number, int owner) {
-		this.id = id;
-		this.type = type;
-		this.number = number;
-		this.owner = owner;
-		this.transactions = new ArrayList<>();
-	}
+	private String owner;			// fbID
+	private float balance;
 	
 	public String getName() {
 		return name;
@@ -37,11 +25,11 @@ public class Account {
 		this.name = name;
 	}
 
-	public int getOwner() {
+	public String getOwner() {
 		return owner;
 	}
 
-	public void setOwner(int owner) {
+	public void setOwner(String owner) {
 		this.owner = owner;
 	}
 
@@ -68,16 +56,15 @@ public class Account {
 	public void setType(AccountType type) {
 		this.type = type;
 	}
-	
-	public void addTransaction(Transaction t){
-		transactions.add(t);
-	}
-	
-	public float getBalance(){
-		float balance = 0;
-		for(Transaction t : transactions){
-			balance += t.getValue();
-		}
+
+	public float getBalance() {
 		return balance;
 	}
+
+	public void setBalance(float balance) {
+		this.balance = balance;
+	}
+	
+	
+	
 }

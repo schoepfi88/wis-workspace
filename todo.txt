@@ -1,7 +1,6 @@
 ANFORDERUNGEN
 + Die Applikation muss über ein Anmeldesystem verfügen.
-- Alle Transaktionen und alle Konten müssen persisiert werden. Verlässt ein Benutzer die Applikation und meldet sich später erneut an, so müssen alle Kontostände und alle Transaktionen mit
-- Export- bzw. Import-Funktionalität muss implementiert werden
++ Alle Transaktionen und alle Konten müssen persisiert werden. Verlässt ein Benutzer die Applikation und meldet sich später erneut an, so müssen alle Kontostände und alle Transaktionen mit
 + Die Applikation ist als Single-Page-Webapplikation zu implementieren
 + Es ist eine strikte Trennung zwischen HTML, JS und CSS einzuhalten
 - Als JS-Framework kann wahlweise Webpack und/oder ReactJS verwendet werden
@@ -9,9 +8,3 @@ ANFORDERUNGEN
 - Es ist auf eine geeignete Usability zu achten
 - Die umgesetzten Funktionalitäten sind ausreichend zu testen
 
-TODO
-- Transaktionen hinzufügen
-- Overview soll die salden aller konten darstellen
-- Logout und anzeige vom usernamen in navbar
-- Testen aller klassen
-...
