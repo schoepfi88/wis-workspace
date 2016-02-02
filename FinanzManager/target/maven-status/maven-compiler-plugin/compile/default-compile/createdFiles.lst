@@ -8,7 +8,7 @@ resources/Resource.class
 test/ServerAPI.class
 models/ActiveUser.class
 models/Account.class
-resources/FacebookLogin.class
 resources/Application.class
+resources/FacebookLogin.class
 test/BrowserTest.class
 test/ModelTest.class

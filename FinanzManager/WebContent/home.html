@@ -15,7 +15,7 @@
 		<script type="text/javascript" src="js/angular-ctrl.js"></script>
 		<script type="text/javascript" src="js/bootstrap-select.min.js"></script>
 		<script type="text/javascript" src="js/moment.min.js"></script>
-		<title>Finanz Manger</title>
+		<title>Finanz Manager - Hauptseite</title>
 	</head>
 <body class="disable-x-scroll" ng-app="Finanz" ng-controller="LoginCtrl">
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -29,17 +29,17 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="index.html">Finanz Manager</a>
+			<a class="navbar-brand" href="index.html" tabindex="1">Finanz Manager<span class="screen-reader-text"> Hier klicken um zur Loginpage zurückzukehren</span></a>
 		</div>
 
 		<div class="collapse navbar-collapse">
-			<ul class="nav navbar-nav">
-				<li><a ng-click="toAnchor('overview')">Home</a></li>
-				<li><a ng-click="toAnchor('accounts')">Accounts</a></li>
-				<li><a ng-click="toAnchor('transactions')">Transactions</a></li>
-				<li ng-show="loggedIn"><a id="current_user" href="#overview"></a></li>
-				<li ng-show="loggedIn"><a ng-click="logout()">Logout</a></li>
-				<li ng-show="!loggedIn"><a ng-click="facebookLogin()">Login</a></li>
+			<ul class="nav navbar-nav" >
+				<li ><a ng-click="toAnchor('overview')" tabindex="1">Home<span class="screen-reader-text">Seitennavigation zurücksetzen</span></a></li>
+				<li ><a ng-click="toAnchor('accounts')" tabindex="2">Accounts<span class="screen-reader-text">Zum Tab Accounts springen</span></a></li>
+				<li ><a ng-click="toAnchor('transactions')" tabindex="3">Transaktionen<span class="screen-reader-text"> Zum Tab Transaktionen springen</span></a></li>
+				<li ng-show="loggedIn"><a id="current_user" href="#overview" tabindex="4"><span class="screen-reader-text"> Username:</span></a></li>
+				<li ng-show="loggedIn"><a ng-click="logout()" tabindex="5">Logout</a></li>
+				<li ng-show="!loggedIn"><a ng-click="facebookLogin()" tabindex="6">Login</a></li>
 			</ul>
 		</div>
 		<!-- /.navbar-collapse -->
@@ -53,10 +53,10 @@
 		<div class="col-xs-8 col-md-8 col-sm-8 col-lg-8" ng-app="Finanz" ng-controller="FinanceCtrl">
 			
 			<!-- OVERVIEW -->
-			<h1 id="overview" class="h1">Overview</h1>
+			<h1 id="overview" class="h1" tabindex="7">Übersicht <span class="screen-reader-text"> Alle Kontostände werden hier angezeigt</span></h1>
 			<div class="jumbotron">
 				<div class="panel panel-primary panel-account" ng-repeat="acc in accounts">
-					<div class="panel-heading panel-account-head">
+					<div class="panel-heading panel-account-head" tabindex="8">
 						{{acc.name}}
 						<span class="btn-right" >
 						{{acc.balance}} €
@@ -65,7 +65,7 @@
 				</div>
 				<!-- TOTAL -->
 				<div class="panel panel-primary panel-account">
-					<div class="panel-heading panel-overview-head">
+					<div class="panel-heading panel-overview-head" tabindex="9">
 						Total:
 						<span class="btn-right" >
 						{{sum}} €
@@ -75,12 +75,13 @@
   			</div>
   			
   			<!-- ACCOUNTS -->
-  			<h1 id="accounts" class="h1">Accounts</h1>
+  			<h1 id="accounts" class="h1" tabindex="10">Accounts <span class="screen-reader-text"> Alle Accounts werden hier angezeigt</span></h1>
 			<div class="jumbotron">
 				<div class="panel panel-primary panel-account" ng-repeat="acc in accounts">
-					<div class="panel-heading panel-account-head">
-						{{acc.name}}: ({{acc.type}} {{acc.number}})
+					<div class="panel-heading panel-account-head" tabindex="11">
+						{{acc.name}}:<span class="screen-reader-text"> Kontotyp:</span> ({{acc.type}} <span class="screen-reader-text">Kontonummer</span> {{acc.number}})
 						<span class="btn-right" >
+						<span class="screen-reader-text"> Kontostand</span>
 						{{acc.balance}} €
 						</span>
 					</div>
@@ -90,7 +91,7 @@
 				</div>
 				<!-- Trigger the modal with a button -->
 				<div class="content-center">
-					<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#createAcc">Create Account</button>
+					<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#createAcc" tabindex="12">Account erstellen</button>
 				</div>
 				<!-- Modal Accounts-->
 				<div id="createAcc" class="modal fade" role="dialog">
@@ -99,22 +100,22 @@
 				    <div class="modal-content">
 				      <div class="modal-header">
 				        <button type="button" class="close" data-dismiss="modal">&times;</button>
-				        <h4 class="modal-title">Create Account</h4>
+				        <h4 class="modal-title">Account erstellen</h4>
 				      </div>
 				      <div class="modal-body">
 				      	<label for="name">Account Name</label>
-						<input id="name" class="form-control" ng-model="account.name"/>
+						<input id="name" class="form-control" ng-model="account.name" tabindex="13"/>
 						<br>
-						<label for="number">Account Number</label>
-						<input id="number" class="form-control" ng-model="account.number"/>
+						<label for="number">Account Nummmer</label>
+						<input id="number" class="form-control" ng-model="account.number" tabindex="14"/>
 						<br>
-						<select id="accountCategory" class="selectpicker" title="Select Category ..." ng-model="account.type">
+						<select id="accountCategory" class="selectpicker" title="kategorie auswählen ..." ng-model="account.type" tabindex="15">
 						<option ng-repeat="type in account_tpyes">{{type}}</option>
 						</select>
 				      </div>
 				      <div class="modal-footer">
-				      	<div class="btn btn-primary" ng-click="createAccount(account)">Create Account</div>
-				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				      	<div class="btn btn-primary" ng-click="createAccount(account)" tabindex="16">Account erstellen</div>
+				        <button type="button" class="btn btn-default" data-dismiss="modal" tabindex="17">Schließen</button>
 				      </div>
 				    </div>
 				
@@ -123,17 +124,26 @@
   			</div>
   			
   			<!-- TRANSACTIONS -->
-  			<h1 id="transactions" class="h1">Transactions</h1>
+  			<h1 id="transactions" class="h1" tabindex="18">Transaktionen<span class="screen-reader-text"> Alle Transaktionen werden hier angezeigt</span></h1>
 			<div class="jumbotron">
 				<div class="panel panel-primary panel-account" ng-repeat="trans in transactions">
-					<div class="panel-heading panel-account-head">
+					<div class="panel-heading panel-account-head" tabindex="19">
+						<span class="screen-reader-text"> Transaktionstyp</span>
 						{{trans.subject}}
 						<span class="btn-right" >
+						
+						<span class="screen-reader-text"> Transaktionsbetrag</span>
 						{{trans.value}} €
 						</span>
 					</div>
-					<div class="panel-body">
-						FROM: {{trans.sender}} TO: {{trans.receiver}}
+					<div class="panel-body" tabindex="19">
+						FROM:
+						<span class="screen-reader-text"> Absender</span>
+						 {{trans.sender}} 
+						 
+						 TO: 
+						 <span class="screen-reader-text">Empfänger</span>
+						 {{trans.receiver}}
 						<span class="btn-right" >
 						{{trans.time}}
 						</span>
@@ -141,7 +151,7 @@
 				</div>
 				<!-- Trigger the modal with a button -->
 				<div class="content-center">
-					<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#createTrans">Create Transaction</button>
+					<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#createTrans" tabindex="21">Transaktion erstellen</button>
 				</div>
 				<!-- Modal transactions-->
 				<div id="createTrans" class="modal fade" role="dialog">
@@ -150,25 +160,25 @@
 				    <div class="modal-content">
 				      <div class="modal-header">
 				        <button type="button" class="close" data-dismiss="modal">&times;</button>
-				        <h4 class="modal-title">Create Transaction</h4>
+				        <h4 class="modal-title">Transaktion erstellen</h4>
 				      </div>
 				      <div class="modal-body">
 				      	<label for="name">Subject</label>
-						<input id="name" class="form-control" ng-model="transaction.subject"/>
+						<input id="name" class="form-control" ng-model="transaction.subject" tabindex="22" />
 						<br>
-						<label for="number">Sender Account Number</label>
-						<input id="number" class="form-control" ng-model="transaction.sender"/>
+						<label for="number">Account Nummer des Senders</label>
+						<input id="number" class="form-control" ng-model="transaction.sender" tabindex="23" />
 						<br>
-						<label for="number2">Receiver Account Number</label>
-						<input id="number2" class="form-control" ng-model="transaction.receiver"/>
+						<label for="number2">Account Nummer des Empfängers</label>
+						<input id="number2" class="form-control" ng-model="transaction.receiver" tabindex="24" />
 						<br>
-						<label for="value">Value</label>
-						<input id="value" class="form-control" ng-model="transaction.value"/>
+						<label for="value">Betrag</label>
+						<input id="value" class="form-control" ng-model="transaction.value" tabindex="25" />
 						<br>
 				      </div>
 				      <div class="modal-footer">
-				      	<div class="btn btn-primary" ng-click="createTransaction(transaction)">Submit Transaction</div>
-				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				      	<div class="btn btn-primary" ng-click="createTransaction(transaction)" tabindex="26">Transaktion bestätigen</div>
+				        <button type="button" class="btn btn-default" data-dismiss="modal" tabindex="27">Schließen</button>
 				      </div>
 				    </div>
 				
